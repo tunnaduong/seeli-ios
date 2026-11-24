@@ -146,6 +146,7 @@ final class AppStore {
     func signIn(with c: SocialCredential) async throws -> Bool {
         var body: [String: Any] = ["idToken": c.idToken, "nonce": c.nonce]
         if let name = c.name { body["name"] = name }
+        if let code = c.authorizationCode { body["authorizationCode"] = code }
         let res = try await api.request("POST", "auth/\(c.provider)", body: body, as: AuthResponse.self)
         let isNew = res.isNew ?? false
         welcomePending = isNew
@@ -190,8 +191,26 @@ final class AppStore {
         updateWidgets()
     }
 
+    /// Deletes the account. If it is linked to Apple and the server holds no Apple token yet,
+    /// the user confirms with Apple once so the server can revoke SEELI's access.
     func deleteAccount() async -> Bool {
-        guard await attempt({ try await api.request("DELETE", "me") }) != nil else { return false }
+        do {
+            try await api.request("DELETE", "me")
+        } catch let error as APIError where error.code == "apple_reauth_required" {
+            do {
+                let credential = try await AppleSignIn().start()
+                guard let code = credential.authorizationCode else { lastError = t("error.generic"); return false }
+                guard await attempt({ try await api.request("DELETE", "me", body: ["appleAuthorizationCode": code]) }) != nil else { return false }
+            } catch SocialAuthError.cancelled {
+                return false
+            } catch {
+                lastError = (error as? LocalizedError)?.errorDescription ?? t("error.generic")
+                return false
+            }
+        } catch {
+            lastError = (error as? LocalizedError)?.errorDescription ?? t("error.generic")
+            return false
+        }
         clearSession()
         return true
     }

@@ -181,7 +181,7 @@
 "settings.logout.confirm" = "Đăng xuất khỏi SEELI?";
 "settings.delete" = "Xoá tài khoản";
 "settings.delete.confirm" = "Xoá tài khoản vĩnh viễn?";
-"settings.delete.body" = "Toàn bộ ảnh, ký ức và kết nối sẽ bị xoá khỏi thiết bị này và không thể khôi phục.";
+"settings.delete.body" = "Toàn bộ ảnh, ký ức và kết nối sẽ bị xoá vĩnh viễn khỏi SEELI và không thể khôi phục. Nếu bạn đăng nhập bằng Apple, quyền truy cập của SEELI vào Apple ID của bạn cũng sẽ bị thu hồi.";
 "verified.title" = "Tài khoản xác minh";
 "verified.body" = "Tính năng xác minh danh tính đang được chuẩn bị, giúp bạn yên tâm hơn khi kết nối.";
 

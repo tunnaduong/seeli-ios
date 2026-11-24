@@ -389,6 +389,9 @@ struct SettingsView: View {
                         Button(t("settings.delete")) { confirmDelete = true }
                             .foregroundStyle(Color(hex: 0xB0574A))
                             .padding(.vertical, 6)
+                        if let error = store.lastError {
+                            Text(error).font(.system(size: 12)).foregroundStyle(Color(hex: 0xB0574A))
+                        }
                     }
 
                     Text("SEELI \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")")

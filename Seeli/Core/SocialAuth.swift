@@ -9,6 +9,7 @@ struct SocialCredential {
     var idToken: String
     var nonce: String      // value expected in the token's `nonce` claim
     var name: String?      // Apple sends the name only on the very first sign-in
+    var authorizationCode: String? // Apple: lets the server obtain a token it can revoke later
 }
 
 enum SocialAuthError: LocalizedError {
@@ -54,6 +55,7 @@ private final class PresentationAnchor: NSObject, ASAuthorizationControllerPrese
 final class AppleSignIn: NSObject, ASAuthorizationControllerDelegate {
     private var continuation: CheckedContinuation<SocialCredential, Error>?
     private var hashedNonce = ""
+    private var controller: ASAuthorizationController? // keep alive while the sheet is up
 
     func start() async throws -> SocialCredential {
         let raw = randomString()
@@ -64,6 +66,7 @@ final class AppleSignIn: NSObject, ASAuthorizationControllerDelegate {
         let controller = ASAuthorizationController(authorizationRequests: [request])
         controller.delegate = self
         controller.presentationContextProvider = PresentationAnchor.shared
+        self.controller = controller
         return try await withCheckedThrowingContinuation { cont in
             continuation = cont
             controller.performRequests()
@@ -76,7 +79,9 @@ final class AppleSignIn: NSObject, ASAuthorizationControllerDelegate {
             finish(.failure(SocialAuthError.failed)); return
         }
         let name = [cred.fullName?.givenName, cred.fullName?.familyName].compactMap { $0 }.joined(separator: " ")
-        finish(.success(SocialCredential(provider: "apple", idToken: token, nonce: hashedNonce, name: name.isEmpty ? nil : name)))
+        let code = cred.authorizationCode.flatMap { String(data: $0, encoding: .utf8) }
+        finish(.success(SocialCredential(provider: "apple", idToken: token, nonce: hashedNonce,
+                                         name: name.isEmpty ? nil : name, authorizationCode: code)))
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
@@ -87,6 +92,7 @@ final class AppleSignIn: NSObject, ASAuthorizationControllerDelegate {
     private func finish(_ result: Result<SocialCredential, Error>) {
         continuation?.resume(with: result)
         continuation = nil
+        controller = nil
     }
 }
 

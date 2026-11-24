@@ -181,7 +181,7 @@
 "settings.logout.confirm" = "SEELIからログアウトしますか？";
 "settings.delete" = "アカウントを削除";
 "settings.delete.confirm" = "アカウントを完全に削除しますか？";
-"settings.delete.body" = "写真、思い出、つながりはすべてこの端末から削除され、元に戻せません。";
+"settings.delete.body" = "写真、思い出、つながりはすべてSEELIから完全に削除され、元に戻せません。Appleでサインインしている場合、Apple IDへのSEELIのアクセスも取り消されます。";
 "verified.title" = "Verified Account";
 "verified.body" = "本人確認機能は現在準備中です。より安心してつながれるようにします。";
 
