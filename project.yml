@@ -26,6 +26,7 @@ targets:
           - CFBundleURLName: com.tunnaduong.seeli
             CFBundleURLSchemes: [seeli]
         SEELIAPIURL: $(SEELI_API_URL)
+        ITSAppUsesNonExemptEncryption: false
         NSAppTransportSecurity:
           NSAllowsLocalNetworking: true
     entitlements:
@@ -41,6 +42,7 @@ targets:
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: SEELI
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.photography
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
         INFOPLIST_KEY_NSCameraUsageDescription: "SEELI dùng camera để bạn ghi lại những gì mình nhìn thấy và quét mã QR kết bạn."

@@ -416,6 +416,7 @@
 				INFOPLIST_FILE = Seeli/Info.plist;
 				INFOPLIST_KEY_CFBundleAllowMixedLocalizations = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = SEELI;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				INFOPLIST_KEY_NSCameraUsageDescription = "SEELI dùng camera để bạn ghi lại những gì mình nhìn thấy và quét mã QR kết bạn.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SEELI ghi lại nơi bạn chụp ảnh. Thông tin này chỉ lưu trong ký ức của riêng bạn.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -542,6 +543,7 @@
 				INFOPLIST_FILE = Seeli/Info.plist;
 				INFOPLIST_KEY_CFBundleAllowMixedLocalizations = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = SEELI;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				INFOPLIST_KEY_NSCameraUsageDescription = "SEELI dùng camera để bạn ghi lại những gì mình nhìn thấy và quét mã QR kết bạn.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SEELI ghi lại nơi bạn chụp ảnh. Thông tin này chỉ lưu trong ký ức của riêng bạn.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
