@@ -131,7 +131,7 @@ final class AppStore {
 
     // MARK: Auth
 
-    private struct AuthResponse: Decodable { var token: String; var user: UserAccount }
+    private struct AuthResponse: Decodable { var token: String; var user: UserAccount; var isNew: Bool? }
 
     func signUp(name: String, handle: String, email: String, password: String) async throws {
         let res = try await api.request("POST", "auth/signup", body: [
@@ -139,6 +139,19 @@ final class AppStore {
         ], as: AuthResponse.self)
         welcomePending = true
         startSession(res)
+    }
+
+    /// Sign in with Apple / Google. Returns true when a new SEELI account was created.
+    @discardableResult
+    func signIn(with c: SocialCredential) async throws -> Bool {
+        var body: [String: Any] = ["idToken": c.idToken, "nonce": c.nonce]
+        if let name = c.name { body["name"] = name }
+        let res = try await api.request("POST", "auth/\(c.provider)", body: body, as: AuthResponse.self)
+        let isNew = res.isNew ?? false
+        welcomePending = isNew
+        startSession(res)
+        if !isNew { await refresh() }
+        return isNew
     }
 
     func login(email: String, password: String) async throws {
@@ -183,9 +196,11 @@ final class AppStore {
         return true
     }
 
-    func updateProfile(name: String, bio: String) async -> Bool {
+    func updateProfile(name: String, bio: String, handle: String? = nil) async -> Bool {
+        var body: [String: Any] = ["name": name, "bio": bio]
+        if let handle { body["handle"] = handle }
         guard let user = await attempt({
-            try await api.request("PATCH", "me", body: ["name": name, "bio": bio], as: UserAccount.self)
+            try await api.request("PATCH", "me", body: body, as: UserAccount.self)
         }) else { return false }
         account = user
         save()

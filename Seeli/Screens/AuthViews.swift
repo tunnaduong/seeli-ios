@@ -74,6 +74,9 @@ struct LoginView: View {
                     .disabled(!canSubmit || busy)
                     .padding(.top, 28)
 
+                SocialButtons(onSignedIn: { isNew in if isNew { path.append(.created) } }, error: $error)
+                    .padding(.top, 16)
+
                 HStack(spacing: 6) {
                     Text(t("login.noAccount")).foregroundStyle(Color.seeliMuted)
                     Button(t("login.signUp")) { path.append(.signUp) }
@@ -167,6 +170,12 @@ struct SignUpView: View {
                 .buttonStyle(PrimaryButtonStyle(enabled: valid))
                 .disabled(!valid || busy)
                 .padding(.top, 28)
+
+                SocialButtons(onSignedIn: { isNew in
+                    if isNew { path.append(.created) }
+                }, error: $error)
+                .padding(.top, 16)
+                .padding(.bottom, 24)
             }
             .padding(.horizontal, 24)
         }
@@ -233,6 +242,13 @@ struct AccountCreatedView: View {
                 .font(.system(size: 15))
                 .foregroundStyle(Color.seeliMuted)
                 .padding(.top, 8)
+            if let account = store.account, account.hasPassword == false {
+                Text(tf("created.handle", account.handle))
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.seeliMuted)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 6)
+            }
 
             VStack(alignment: .leading, spacing: 14) {
                 principle("eye", t("created.p1"))

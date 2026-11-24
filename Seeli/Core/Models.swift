@@ -84,6 +84,8 @@ struct UserAccount: Codable, Hashable {
     var email: String
     var bio: String
     var inviteCode: String
+    var hasPassword: Bool? = true
+    var providers: [String]? = []
 
     var initial: String { String(name.prefix(1)).uppercased() }
 }

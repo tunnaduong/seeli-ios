@@ -78,11 +78,13 @@ private struct EditProfileSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var name = ""
     @State private var bio = ""
+    @State private var handle = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             Text(t("profile.edit")).font(.system(size: 20, weight: .semibold))
             LabeledField(label: t("field.name"), placeholder: t("field.name.placeholder"), text: $name)
+            LabeledField(label: t("field.handle"), placeholder: "seeli_user", text: $handle, contentType: .username)
             VStack(alignment: .leading, spacing: 8) {
                 Text(t("field.bio")).font(.system(size: 12, weight: .medium)).foregroundStyle(Color.seeliMuted)
                 TextField(t("field.bio.placeholder"), text: $bio, axis: .vertical)
@@ -94,7 +96,8 @@ private struct EditProfileSheet: View {
             }
             Button(t("common.save")) {
                 Task {
-                    if await store.updateProfile(name: name.trimmingCharacters(in: .whitespaces), bio: bio) { dismiss() }
+                    let h = handle.trimmingCharacters(in: .whitespaces).lowercased().replacingOccurrences(of: "@", with: "")
+                    if await store.updateProfile(name: name.trimmingCharacters(in: .whitespaces), bio: bio, handle: h) { dismiss() }
                 }
             }
             .buttonStyle(PrimaryButtonStyle(enabled: !name.trimmingCharacters(in: .whitespaces).isEmpty))
@@ -104,6 +107,7 @@ private struct EditProfileSheet: View {
         .background(Color.seeliBG.ignoresSafeArea())
         .onAppear {
             name = store.account?.name ?? ""
+            handle = store.account?.handle ?? ""
             bio = store.account?.bio ?? ""
         }
     }

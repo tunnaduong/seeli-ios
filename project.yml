@@ -25,6 +25,9 @@ targets:
         CFBundleURLTypes:
           - CFBundleURLName: com.tunnaduong.seeli
             CFBundleURLSchemes: [seeli]
+          - CFBundleURLName: google-signin
+            CFBundleURLSchemes: [$(GOOGLE_REVERSED_CLIENT_ID)]
+        GIDClientID: $(GOOGLE_CLIENT_ID)
         SEELIAPIURL: $(SEELI_API_URL)
         ITSAppUsesNonExemptEncryption: false
         NSAppTransportSecurity:
@@ -33,9 +36,13 @@ targets:
       path: Seeli/Seeli.entitlements
       properties:
         com.apple.security.application-groups: [group.com.tunnaduong.seeli]
+        com.apple.developer.applesignin: [Default]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tunnaduong.seeli
+        # Google Sign-In: iOS OAuth client from Google Cloud Console. Leave empty to hide the Google button.
+        GOOGLE_CLIENT_ID: "536205051202-lm62pst3mblokg1hitvgjb8r279hufi0.apps.googleusercontent.com"
+        GOOGLE_REVERSED_CLIENT_ID: "com.googleusercontent.apps.536205051202-lm62pst3mblokg1hitvgjb8r279hufi0"
         SEELI_API_URL: https://seeli-api.tunnaduong.com
         TARGETED_DEVICE_FAMILY: "1"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon

@@ -223,3 +223,10 @@
 "error.not_yet" = "Bức ảnh này vẫn chưa đến lúc quay lại.";
 "error.photo_too_large" = "Ảnh quá lớn.";
 "error.account_suspended" = "Tài khoản này đã bị tạm khoá. Nếu bạn nghĩ đây là nhầm lẫn, hãy liên hệ với SEELI.";
+"auth.or" = "hoặc";
+"auth.apple" = "Tiếp tục với Apple";
+"auth.google" = "Tiếp tục với Google";
+"created.handle" = "Tên người dùng của bạn là @%@ — bạn có thể đổi trong Hồ sơ.";
+"error.provider_disabled" = "Cách đăng nhập này chưa được bật.";
+"error.invalid_token" = "Không xác minh được tài khoản. Hãy thử lại.";
+"error.provider_unreachable" = "Không kết nối được tới Apple/Google. Hãy thử lại sau.";

@@ -18,8 +18,10 @@
 		3619F9A8D3B52ADE7B093BBE /* ConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC37E7ABB63F0B1C288D327E /* ConnectView.swift */; };
 		38FA3B6D436F199E16B561EB /* PostFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3377551A407760ABACDF3003 /* PostFlow.swift */; };
 		4D123961601387905F15044D /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E54A7C41FA3C671A8F9738 /* AppStore.swift */; };
+		5B78BECC941E53370E8DD35E /* SocialButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DAA7E7A52472945AC0DF12 /* SocialButtons.swift */; };
 		5F7ED62E19C1C0ED47CFC3DD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 96E4ECB991557B04C6E07547 /* Localizable.strings */; };
 		61433CE5BAEE59F88673E1AC /* VerticalText.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D216744D3BA5AE8BBE692 /* VerticalText.swift */; };
+		762A5BDE5F5954ECFD5798BA /* SocialAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08721E250E49CC16395E598D /* SocialAuth.swift */; };
 		7DA8378C2C1264E9FB1FE6BC /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC06D08B8D27143772F4AA2 /* Components.swift */; };
 		8388B59F69293D77B580068D /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9B458EB594C89E663F8847 /* DateText.swift */; };
 		8BA30E09B2FC28414442C75A /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A5E7430899F75E8557406 /* WidgetData.swift */; };
@@ -67,6 +69,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		08721E250E49CC16395E598D /* SocialAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuth.swift; sourceTree = "<group>"; };
 		0E104A696D1C9CDC2755106F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1BF26A4F69E214F7C1E19948 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		21841197521690E7FE815BCD /* ProfileViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViews.swift; sourceTree = "<group>"; };
@@ -80,6 +83,7 @@
 		3DA4CA65BA340B66A56108B9 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		3E1DED2636B131A9834080D4 /* SeeliWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeeliWidgets.swift; sourceTree = "<group>"; };
 		453BDA7BCB06322AE851C6E1 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
+		52DAA7E7A52472945AC0DF12 /* SocialButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialButtons.swift; sourceTree = "<group>"; };
 		6018D7C28B74DCB63713E11F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6872BB5AAD2C935AA42D6A21 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		69655235D504172BD970D415 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -113,6 +117,7 @@
 				22E54A7C41FA3C671A8F9738 /* AppStore.swift */,
 				3DA4CA65BA340B66A56108B9 /* Models.swift */,
 				453BDA7BCB06322AE851C6E1 /* Services.swift */,
+				08721E250E49CC16395E598D /* SocialAuth.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -213,6 +218,7 @@
 			children = (
 				8CC06D08B8D27143772F4AA2 /* Components.swift */,
 				C898ADAA47FFA66419A2144E /* Landscape.swift */,
+				52DAA7E7A52472945AC0DF12 /* SocialButtons.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -356,6 +362,8 @@
 				A2403027AF17EF4958CD6983 /* ReunionView.swift in Sources */,
 				F986307A9F25FEE3E5721276 /* SeeliApp.swift in Sources */,
 				A1FB773FE35344C1E98954B1 /* Services.swift in Sources */,
+				762A5BDE5F5954ECFD5798BA /* SocialAuth.swift in Sources */,
+				5B78BECC941E53370E8DD35E /* SocialButtons.swift in Sources */,
 				11C754C54BEA3C1748278781 /* Theme.swift in Sources */,
 				FC2C4E30B682D346E0F4A5BC /* VerticalText.swift in Sources */,
 				8BA30E09B2FC28414442C75A /* WidgetData.swift in Sources */,
@@ -413,6 +421,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 62H5L8QDTS;
 				GENERATE_INFOPLIST_FILE = YES;
+				GOOGLE_CLIENT_ID = "536205051202-lm62pst3mblokg1hitvgjb8r279hufi0.apps.googleusercontent.com";
+				GOOGLE_REVERSED_CLIENT_ID = "com.googleusercontent.apps.536205051202-lm62pst3mblokg1hitvgjb8r279hufi0";
 				INFOPLIST_FILE = Seeli/Info.plist;
 				INFOPLIST_KEY_CFBundleAllowMixedLocalizations = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = SEELI;
@@ -540,6 +550,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 62H5L8QDTS;
 				GENERATE_INFOPLIST_FILE = YES;
+				GOOGLE_CLIENT_ID = "536205051202-lm62pst3mblokg1hitvgjb8r279hufi0.apps.googleusercontent.com";
+				GOOGLE_REVERSED_CLIENT_ID = "com.googleusercontent.apps.536205051202-lm62pst3mblokg1hitvgjb8r279hufi0";
 				INFOPLIST_FILE = Seeli/Info.plist;
 				INFOPLIST_KEY_CFBundleAllowMixedLocalizations = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = SEELI;
