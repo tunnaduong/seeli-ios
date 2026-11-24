@@ -1,0 +1,16 @@
+"home.question" = "今日は、何が見えた？";
+"widget.inline" = "今日は、何が見えた？";
+"widget.reunion.title" = "ある瞬間が、帰ってきました";
+"widget.reunion.tap" = "タップして再会する";
+"widget.reunion.count" = "%d枚の瞬間が待っています";
+"widget.sleeping" = "%d枚がおやすみ中";
+"widget.sleeping.hint" = "思いがけないタイミングで、また出会えます。";
+"widget.calm" = "今は、見るものはありません。まわりを見てみよう。";
+"widget.wordsOfDay" = "その日のことば";
+"widget.words.empty" = "撮影時に残したことばが、ここに現れます。";
+"widget.signedOut" = "SEELIを開いてはじめよう。";
+"widget.today.name" = "今日";
+"widget.today.desc" = "見たものをすぐ撮って、写真が帰ってきたら知らせます。";
+"widget.words.name" = "その日のことば";
+"widget.words.desc" = "写真ではなく、あなたが残したことばをひとつ。";
+"widget.lock.desc" = "世界を見ることを思い出させ、写真が帰ってきたら知らせます。";

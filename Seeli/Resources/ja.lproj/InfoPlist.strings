@@ -1,0 +1,2 @@
+"NSCameraUsageDescription" = "見たものを撮影し、友だちのQRコードを読み取るためにカメラを使用します。";
+"NSLocationWhenInUseUsageDescription" = "撮影場所を記録します。この情報はあなた自身の思い出にのみ保存されます。";

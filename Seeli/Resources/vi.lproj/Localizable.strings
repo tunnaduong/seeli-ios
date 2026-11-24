@@ -1,0 +1,225 @@
+/* Common */
+"common.back" = "Quay lại";
+"common.cancel" = "Huỷ";
+"common.close" = "Đóng";
+"common.delete" = "Xoá";
+"common.home" = "Trang chủ";
+"common.save" = "Lưu";
+
+/* Auth */
+"login.title" = "Chào mừng bạn trở lại.";
+"login.button" = "Đăng nhập";
+"login.noAccount" = "Chưa có tài khoản?";
+"login.signUp" = "Tạo tài khoản";
+"login.localNote" = "Ảnh của bạn được cất an toàn, và chỉ quay lại sau khoảng 30 ngày.";
+"field.email" = "Email";
+"field.password" = "Mật khẩu";
+"field.password.hint" = "Ít nhất 8 ký tự";
+"field.name" = "Tên hiển thị";
+"field.name.placeholder" = "Ví dụ: Phát";
+"field.handle" = "Tên người dùng";
+"field.bio" = "Giới thiệu";
+"field.bio.placeholder" = "Bạn thích nhìn ngắm điều gì?";
+"signup.header" = "Bắt đầu với SEELI.";
+"signup.title" = "Tạo tài khoản";
+"signup.subtitle" = "Không có lượt thích, không có người theo dõi. Chỉ có những gì bạn thực sự nhìn thấy.";
+"signup.promise" = "Mình hiểu rằng ảnh sẽ không hiện lại ngay sau khi chụp, và bạn bè chỉ là những người mình đã gặp ngoài đời.";
+"signup.button" = "Tạo tài khoản";
+"created.title" = "Tài khoản đã được tạo.";
+"created.welcome" = "Chào mừng, %@.";
+"created.p1" = "Nhìn kỹ hơn, thay vì lưu nhiều hơn.";
+"created.p2" = "Chụp xong, hãy buông. Khoảng 30 ngày sau, bạn sẽ gặp lại nó.";
+"created.p3" = "Kết nối bằng mã QR với những người bạn đã thực sự gặp.";
+"created.start" = "Bắt đầu";
+
+/* Home */
+"home.question" = "Hôm nay, bạn đã nhìn thấy gì?";
+"home.sleeping" = "%d khoảnh khắc đang ngủ yên, chờ ngày gặp lại.";
+"home.reunion.title" = "Một khoảnh khắc đã quay lại";
+"home.reunion.one" = "Hãy nhìn nó bằng đôi mắt của hôm nay.";
+"home.reunion.many" = "%d khoảnh khắc đang chờ bạn.";
+
+/* Camera */
+"camera.title" = "Chụp ảnh";
+"camera.hint" = "Ảnh sẽ không hiện lại ngay sau khi chụp.";
+"camera.shutter" = "Chụp";
+"camera.released" = "Đã buông.";
+"camera.denied" = "SEELI cần quyền truy cập camera để ghi lại những gì bạn nhìn thấy.";
+"camera.openSettings" = "Mở Cài đặt";
+"camera.unavailable" = "Thiết bị này không có camera.\nBạn vẫn có thể nhấn chụp để thử luồng trải nghiệm.";
+
+/* Post */
+"post.subtitle" = "Thêm một lời cho bức ảnh.";
+"post.hidden.title" = "Bức ảnh tạm thời được cất đi.";
+"post.hidden.body" = "Khi thời gian trôi qua, bạn sẽ gặp lại nó\nvào một lúc không ngờ tới.";
+"post.hidden.auto" = "Thời điểm chụp được ghi lại tự động.";
+"post.note.title" = "Một lời cho khoảnh khắc này.";
+"post.note.subtitle" = "Hãy ghi lại điều bạn thấy, hay điều bạn cảm nhận.";
+"post.note.placeholder" = "Bạn đã thấy gì? Bạn cảm thấy thế nào?";
+"post.place.title" = "Ghi lại địa điểm";
+"post.place.private" = "Chỉ lưu trong ký ức của riêng bạn.";
+"post.place.locating" = "Đang xác định vị trí…";
+"post.place.off" = "Không ghi lại địa điểm.";
+"post.next" = "Tiếp theo";
+"post.next.hint" = "Ở bước tiếp theo, bạn sẽ chọn người để chia sẻ.";
+
+/* Audience */
+"audience.subtitle" = "Chọn người nhận.";
+"audience.title" = "Bạn muốn chia sẻ khung cảnh này với ai?";
+"audience.hint" = "Bạn có thể chọn phạm vi cho từng bài đăng.";
+"audience.onlyMe.desc" = "Giữ lại làm ký ức của riêng mình";
+"audience.circle.desc" = "Gửi đến những người bạn đã kết nối";
+"audience.public.desc" = "Công khai với mọi người";
+"audience.soon" = "Sắp ra mắt";
+"audience.lock.title" = "Ảnh của bạn sẽ không được xem ngay.";
+"audience.lock.body" = "Dù chọn phạm vi nào, bạn sẽ gặp lại nó sau một khoảng thời gian.";
+"audience.submit" = "Đăng với thiết lập này";
+"audience.cancel" = "Huỷ và quay lại";
+
+/* Posted */
+"posted.title" = "Đã buông.";
+"posted.body" = "Bức ảnh đã được cất đi.\nKhoảng 30 ngày nữa, nó sẽ quay lại với bạn.";
+"posted.lookUp" = "Giờ thì, hãy đặt điện thoại xuống\nvà nhìn thế giới quanh mình.";
+"posted.home" = "Về trang chủ";
+
+/* Connect */
+"connect.subtitle" = "Gặp gỡ thế giới mà ai đó đã nhìn thấy.";
+"connect.qr.title" = "Kết nối bằng mã QR";
+"connect.qr.body" = "Trao đổi mã QR với người bạn đã gặp ngoài đời.";
+"connect.feed.title" = "Thế giới ai đó đã thấy";
+"connect.feed.subtitle" = "Từ cuộc gặp lại với bức ảnh, đến một góc nhìn mới.";
+"connect.place" = "Nơi chụp";
+"connect.prompt" = "Khung cảnh này khiến bạn cảm thấy gì?";
+"connect.send" = "Gửi góc nhìn của bạn";
+"connect.edit" = "Sửa góc nhìn của bạn";
+"connect.sent" = "Góc nhìn bạn đã gửi";
+"connect.privacy" = "Bình luận chỉ hiển thị với người đăng và bạn.";
+"connect.comment.placeholder" = "Viết điều bạn cảm nhận…";
+"connect.empty" = "Chưa có ai trong vòng tròn của bạn.\nHãy gặp nhau và trao đổi mã QR nhé.";
+
+/* Memories */
+"memories.subtitle" = "Lần theo thế giới bạn đã thấy, bằng con chữ.";
+"memories.count" = "Ghi chép tháng này: %d";
+"memories.empty" = "Tháng này chưa có ghi chép nào.\nHôm nay bạn đã nhìn thấy gì?";
+"memories.footer" = "Nhớ lại không phải qua ảnh, mà qua những lời bạn để lại.";
+"memories.wordsOfDay" = "Lời của ngày hôm ấy";
+"memories.noWords" = "(không có lời nào — chỉ có khoảnh khắc)";
+"memories.comments" = "Xem bình luận (%d)";
+"memories.reunited" = "Đã gặp lại";
+"memories.sleeping" = "Đang ngủ yên";
+"memories.delete.title" = "Xoá ký ức này?";
+"memories.delete.body" = "Bức ảnh và lời ghi chú sẽ bị xoá vĩnh viễn, không thể khôi phục.";
+"comments.title" = "Bình luận";
+"comments.empty" = "Chưa có bình luận nào.\nKhi bạn bè gửi góc nhìn, chúng sẽ xuất hiện ở đây.";
+
+/* Reunion */
+"reunion.subtitle" = "Gặp lại một khoảnh khắc.";
+"reunion.daysAgo" = "%d ngày trước, bạn đã nhìn thấy điều này.";
+"reunion.then" = "LÚC ẤY";
+"reunion.now" = "Bây giờ, bạn nhìn thấy gì?";
+"reunion.now.hint" = "Cùng một bức ảnh, nhưng có lẽ bạn đã khác.";
+"reunion.placeholder" = "Góc nhìn của bạn hôm nay…";
+"reunion.save" = "Lưu góc nhìn mới";
+"reunion.saved" = "Đã lưu";
+
+/* Profile */
+"profile.subtitle" = "SEELI và bạn.";
+"profile.edit" = "Chỉnh sửa hồ sơ";
+"profile.section" = "Kết nối và cài đặt";
+"profile.friends" = "Bạn bè · Vòng tròn";
+"profile.friends.sub" = "Quản lý người kết nối và phạm vi chia sẻ";
+"profile.privacy" = "Quyền riêng tư và an toàn";
+"profile.privacy.sub" = "Phạm vi công khai · Chặn · Báo cáo";
+"profile.settings" = "Cài đặt";
+"profile.settings.sub" = "Tài khoản và thông báo";
+"profile.verified.sub" = "Tính năng xác minh danh tính (sắp ra mắt)";
+"profile.footer" = "Kết nối với thế giới, theo nhịp của riêng bạn.";
+"friends.subtitle" = "Những người bạn đã gặp.";
+"friends.count" = "%d người trong vòng tròn của bạn";
+
+/* Friend */
+"friend.subtitle" = "Người đã kết nối";
+"friend.bio" = "Giới thiệu";
+"friend.bio.empty" = "Chưa có lời giới thiệu.";
+"friend.memo" = "Ghi chú chỉ bạn thấy";
+"friend.memo.hint" = "Ghi chú này không hiển thị với người kia.";
+"friend.memo.placeholder" = "Hai bạn đã gặp nhau ở đâu?";
+"friend.safety" = "Quản lý mối quan hệ và an toàn";
+"friend.report" = "Báo cáo vấn đề";
+"friend.report.sub" = "Thông báo tài khoản này cho đội ngũ vận hành";
+"friend.report.confirm" = "Báo cáo tài khoản này?";
+"friend.reported" = "Cảm ơn bạn. Báo cáo đã được ghi nhận.";
+"friend.block" = "Chặn";
+"friend.block.sub" = "Dừng mọi tương tác với người này";
+"friend.block.confirm" = "Chặn người này? Họ sẽ bị xoá khỏi vòng tròn của bạn.";
+"friend.remove" = "Xoá bạn";
+"friend.remove.sub" = "Huỷ kết nối với người này";
+"friend.remove.confirm" = "Huỷ kết nối với người này?";
+"friend.footer" = "Bạn luôn có thể xem lại các mối kết nối của mình.";
+"friend.gone" = "Không tìm thấy nội dung này.";
+
+/* Privacy */
+"privacy.default" = "Phạm vi mặc định khi đăng";
+"privacy.p1" = "Ảnh không bao giờ được xem ngay sau khi chụp — kể cả với bạn bè.";
+"privacy.p2" = "Địa điểm chỉ lưu trong ký ức của riêng bạn.";
+"privacy.p3" = "Bình luận chỉ hiển thị với người đăng và người bình luận.";
+"privacy.p4" = "Không có lượt thích, người theo dõi, lượt xem hay bảng xếp hạng.";
+"privacy.blocked" = "Người đã chặn";
+"privacy.blocked.empty" = "Bạn chưa chặn ai.";
+"privacy.unblock" = "Bỏ chặn";
+
+/* Settings */
+"settings.language" = "Ngôn ngữ";
+"settings.notifications" = "Thông báo";
+"settings.notifications.reunion" = "Báo khi một khoảnh khắc quay lại";
+"settings.notifications.hint" = "SEELI chỉ gửi thông báo khi bạn gặp lại ảnh cũ. Không có thông báo nào khác.";
+"settings.demo" = "Chế độ demo";
+"settings.demo.toggle" = "Ảnh quay lại sau ~1 phút";
+"settings.demo.hint" = "Dùng để thử trải nghiệm gặp lại mà không phải chờ 30 ngày. Chỉ áp dụng cho ảnh chụp sau khi bật.";
+"settings.account" = "Tài khoản";
+"settings.logout" = "Đăng xuất";
+"settings.logout.confirm" = "Đăng xuất khỏi SEELI?";
+"settings.delete" = "Xoá tài khoản";
+"settings.delete.confirm" = "Xoá tài khoản vĩnh viễn?";
+"settings.delete.body" = "Toàn bộ ảnh, ký ức và kết nối sẽ bị xoá khỏi thiết bị này và không thể khôi phục.";
+"verified.title" = "Tài khoản xác minh";
+"verified.body" = "Tính năng xác minh danh tính đang được chuẩn bị, giúp bạn yên tâm hơn khi kết nối.";
+
+/* QR */
+"myqr.title" = "Mã QR của tôi";
+"myqr.subtitle" = "Đưa mã này cho người bạn vừa gặp.";
+"myqr.hint" = "Khi gặp nhau ngoài đời, hãy để người kia quét mã này, hoặc đọc cho họ mã 8 ký tự.";
+"myqr.scan" = "Quét mã của người khác";
+"scan.hint" = "Đưa mã QR của bạn bè vào khung hình.";
+"scan.unavailable" = "Không thể dùng camera trên thiết bị này.";
+"scan.manual" = "Hoặc nhập mã 8 ký tự dưới mã QR";
+"scan.add" = "Thêm";
+"scan.invalid" = "Mã không hợp lệ. Mã gồm 8 ký tự.";
+"addFriend.question" = "Bạn đã gặp người này ngoài đời chứ?\nHãy kết nối để chia sẻ thế giới mình đã thấy.";
+"addFriend.connect" = "Kết nối";
+"addFriend.done" = "Đã kết nối! Giờ hai bạn đã ở trong vòng tròn của nhau.";
+"addFriend.already" = "Hai bạn đã kết nối rồi.";
+"addFriend.self" = "Đây là mã của chính bạn.";
+
+/* Notifications */
+"notification.reunion" = "Một khoảnh khắc bạn từng nhìn thấy đã quay lại.";
+"myqr.rotate" = "Đổi mã mới (mã cũ sẽ hết hiệu lực)";
+"addFriend.notFound" = "Không tìm thấy người dùng với mã này.";
+"memories.uploading" = "Đang chờ tải lên";
+"settings.server" = "Máy chủ";
+"settings.server.hint" = "Địa chỉ API của SEELI. Để trống để dùng mặc định. Nhấn Return để lưu.";
+"error.generic" = "Đã có lỗi xảy ra. Vui lòng thử lại.";
+"error.network" = "Không kết nối được máy chủ. Kiểm tra mạng và thử lại.";
+"error.invalid_credentials" = "Email hoặc mật khẩu không đúng.";
+"error.handle_taken" = "Tên người dùng này đã có người dùng.";
+"error.email_taken" = "Email này đã được đăng ký.";
+"error.invalid_handle" = "Tên người dùng chỉ gồm chữ thường, số, dấu . _ - (2–30 ký tự).";
+"error.invalid_email" = "Email không hợp lệ.";
+"error.weak_password" = "Mật khẩu cần ít nhất 8 ký tự.";
+"error.name_required" = "Hãy nhập tên hiển thị.";
+"error.not_found" = "Không tìm thấy nội dung này.";
+"error.too_many_requests" = "Bạn thử quá nhiều lần. Hãy đợi một phút.";
+"error.unauthorized" = "Phiên đăng nhập đã hết. Hãy đăng nhập lại.";
+"error.not_yet" = "Bức ảnh này vẫn chưa đến lúc quay lại.";
+"error.photo_too_large" = "Ảnh quá lớn.";
+"error.account_suspended" = "Tài khoản này đã bị tạm khoá. Nếu bạn nghĩ đây là nhầm lẫn, hãy liên hệ với SEELI.";

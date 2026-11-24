@@ -1,0 +1,658 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0AC2B2F74299164151279FE4 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338BAD41E90D1D2F0D50C771 /* APIClient.swift */; };
+		0C56EF6E73BA64743465D2E4 /* Landscape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C898ADAA47FFA66419A2144E /* Landscape.swift */; };
+		11C754C54BEA3C1748278781 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E104A696D1C9CDC2755106F /* Theme.swift */; };
+		12EF6616FDE77D73F6988398 /* ProfileViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21841197521690E7FE815BCD /* ProfileViews.swift */; };
+		22E3040D458AC4FB4DD831F1 /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9B458EB594C89E663F8847 /* DateText.swift */; };
+		24C911017459207CAEF66192 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE6F2650FC3E7DC8B7D14B78 /* Assets.xcassets */; };
+		28328E5C86417AF1958BDC58 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B06DF86D8D510B6D37C3E767 /* InfoPlist.strings */; };
+		2ABB18C26FFC82CE4B96D3E1 /* QRViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EBBA1F39E45ABFB70E52D8 /* QRViews.swift */; };
+		3619F9A8D3B52ADE7B093BBE /* ConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC37E7ABB63F0B1C288D327E /* ConnectView.swift */; };
+		38FA3B6D436F199E16B561EB /* PostFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3377551A407760ABACDF3003 /* PostFlow.swift */; };
+		4D123961601387905F15044D /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E54A7C41FA3C671A8F9738 /* AppStore.swift */; };
+		5F7ED62E19C1C0ED47CFC3DD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 96E4ECB991557B04C6E07547 /* Localizable.strings */; };
+		61433CE5BAEE59F88673E1AC /* VerticalText.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D216744D3BA5AE8BBE692 /* VerticalText.swift */; };
+		7DA8378C2C1264E9FB1FE6BC /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC06D08B8D27143772F4AA2 /* Components.swift */; };
+		8388B59F69293D77B580068D /* DateText.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9B458EB594C89E663F8847 /* DateText.swift */; };
+		8BA30E09B2FC28414442C75A /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A5E7430899F75E8557406 /* WidgetData.swift */; };
+		920E314E3399EC062DEEC80A /* WidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D05632F4D9C0A7AA0F466 /* WidgetViews.swift */; };
+		9A7A267BBD938BAB55840F41 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E104A696D1C9CDC2755106F /* Theme.swift */; };
+		9FC31FDADA33FCBEE94F8BDB /* SeeliWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1DED2636B131A9834080D4 /* SeeliWidgets.swift */; };
+		A1FB773FE35344C1E98954B1 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453BDA7BCB06322AE851C6E1 /* Services.swift */; };
+		A2403027AF17EF4958CD6983 /* ReunionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD1689A81D99E4C04DE4775 /* ReunionView.swift */; };
+		A3AC932AA4647697BC4C9769 /* AuthViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE1651CFB7CA6855BE58724 /* AuthViews.swift */; };
+		AAE564D81E7D72CF75F22AA3 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6872BB5AAD2C935AA42D6A21 /* CameraView.swift */; };
+		AB869E6A0A63B7362839014C /* MemoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C165590E8B5EDB844A5D99 /* MemoriesView.swift */; };
+		AF6D406F1C5AF23E6792401A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 46F0B314E698ECA4F17C415D /* Localizable.strings */; };
+		B4614E58982276CE8F6D1555 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7AB8685603489A10B03653 /* L10n.swift */; };
+		CE44F19855E088C53D9F9D8F /* SeeliWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 77440650927104C912815D66 /* SeeliWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D81018EE68796BD861A16B2D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA4CA65BA340B66A56108B9 /* Models.swift */; };
+		E022B09732A690FD4B762C4D /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A5E7430899F75E8557406 /* WidgetData.swift */; };
+		F2853A728263C0BC3E9C6659 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7AB8685603489A10B03653 /* L10n.swift */; };
+		F986307A9F25FEE3E5721276 /* SeeliApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F700F024E3F3E5B317F47AF2 /* SeeliApp.swift */; };
+		FC2C4E30B682D346E0F4A5BC /* VerticalText.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D216744D3BA5AE8BBE692 /* VerticalText.swift */; };
+		FE79B44DDF9A1A2F42671146 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8009344214D5DE504007327E /* HomeView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DE2ED13322B67D9F1B248981 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D6E0BF38C267CAB0FD1B9A60 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 07A570E82B073B95BFB57453;
+			remoteInfo = SeeliWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		93056E902C46BE1812DF4B5E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CE44F19855E088C53D9F9D8F /* SeeliWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0E104A696D1C9CDC2755106F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		1BF26A4F69E214F7C1E19948 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		21841197521690E7FE815BCD /* ProfileViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViews.swift; sourceTree = "<group>"; };
+		22E54A7C41FA3C671A8F9738 /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+		231D05632F4D9C0A7AA0F466 /* WidgetViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViews.swift; sourceTree = "<group>"; };
+		2CD1689A81D99E4C04DE4775 /* ReunionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReunionView.swift; sourceTree = "<group>"; };
+		3377551A407760ABACDF3003 /* PostFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFlow.swift; sourceTree = "<group>"; };
+		338BAD41E90D1D2F0D50C771 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		33EBBA1F39E45ABFB70E52D8 /* QRViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViews.swift; sourceTree = "<group>"; };
+		3A119048AACDE5AAC340D614 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3DA4CA65BA340B66A56108B9 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		3E1DED2636B131A9834080D4 /* SeeliWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeeliWidgets.swift; sourceTree = "<group>"; };
+		453BDA7BCB06322AE851C6E1 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
+		6018D7C28B74DCB63713E11F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6872BB5AAD2C935AA42D6A21 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		69655235D504172BD970D415 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6C6A5E7430899F75E8557406 /* WidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetData.swift; sourceTree = "<group>"; };
+		77440650927104C912815D66 /* SeeliWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = SeeliWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F548C0516FD0839091FCB19 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8009344214D5DE504007327E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		83BBC50B839E58AACBF02F90 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		84C165590E8B5EDB844A5D99 /* MemoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoriesView.swift; sourceTree = "<group>"; };
+		8CC06D08B8D27143772F4AA2 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		9C7AB8685603489A10B03653 /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		AE6F2650FC3E7DC8B7D14B78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BC9B458EB594C89E663F8847 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
+		BF9D216744D3BA5AE8BBE692 /* VerticalText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalText.swift; sourceTree = "<group>"; };
+		C898ADAA47FFA66419A2144E /* Landscape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Landscape.swift; sourceTree = "<group>"; };
+		CE47FA8553EB5F5F22504563 /* Seeli.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Seeli.entitlements; sourceTree = "<group>"; };
+		E2E4C4233A1D64BBDE741D4A /* Seeli.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Seeli.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECE1651CFB7CA6855BE58724 /* AuthViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViews.swift; sourceTree = "<group>"; };
+		F066D316ED2DB2BA573370E9 /* SeeliWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SeeliWidget.entitlements; sourceTree = "<group>"; };
+		F700F024E3F3E5B317F47AF2 /* SeeliApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeeliApp.swift; sourceTree = "<group>"; };
+		FC37E7ABB63F0B1C288D327E /* ConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectView.swift; sourceTree = "<group>"; };
+		FEAA68AE8AA70B6069212865 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FF7999585361E20CE2F67DEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		084D6BDC9FE201E1490B2893 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				338BAD41E90D1D2F0D50C771 /* APIClient.swift */,
+				22E54A7C41FA3C671A8F9738 /* AppStore.swift */,
+				3DA4CA65BA340B66A56108B9 /* Models.swift */,
+				453BDA7BCB06322AE851C6E1 /* Services.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		2B03F7CF5E9E60ACF230DFFD /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				BC9B458EB594C89E663F8847 /* DateText.swift */,
+				9C7AB8685603489A10B03653 /* L10n.swift */,
+				0E104A696D1C9CDC2755106F /* Theme.swift */,
+				BF9D216744D3BA5AE8BBE692 /* VerticalText.swift */,
+				6C6A5E7430899F75E8557406 /* WidgetData.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		3E79588906AFC5629520F0D7 /* SeeliWidget */ = {
+			isa = PBXGroup;
+			children = (
+				FF7999585361E20CE2F67DEB /* Info.plist */,
+				F066D316ED2DB2BA573370E9 /* SeeliWidget.entitlements */,
+				3E1DED2636B131A9834080D4 /* SeeliWidgets.swift */,
+				231D05632F4D9C0A7AA0F466 /* WidgetViews.swift */,
+				46F0B314E698ECA4F17C415D /* Localizable.strings */,
+			);
+			path = SeeliWidget;
+			sourceTree = "<group>";
+		};
+		5B735D10DC4CE0BE37D58B2E = {
+			isa = PBXGroup;
+			children = (
+				9044A1C629A237F195AA851A /* Seeli */,
+				3E79588906AFC5629520F0D7 /* SeeliWidget */,
+				2B03F7CF5E9E60ACF230DFFD /* Shared */,
+				B40F4692EEE035649DF7222B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7068149DAF2E991AD57FE087 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AE6F2650FC3E7DC8B7D14B78 /* Assets.xcassets */,
+				B06DF86D8D510B6D37C3E767 /* InfoPlist.strings */,
+				96E4ECB991557B04C6E07547 /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9044A1C629A237F195AA851A /* Seeli */ = {
+			isa = PBXGroup;
+			children = (
+				3A119048AACDE5AAC340D614 /* Info.plist */,
+				CE47FA8553EB5F5F22504563 /* Seeli.entitlements */,
+				A012A4F29B11D305EFA026FF /* App */,
+				E2623AD3E999D05A0F73BB57 /* Components */,
+				084D6BDC9FE201E1490B2893 /* Core */,
+				7068149DAF2E991AD57FE087 /* Resources */,
+				BDD3142775F443BB352B1580 /* Screens */,
+			);
+			path = Seeli;
+			sourceTree = "<group>";
+		};
+		A012A4F29B11D305EFA026FF /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F700F024E3F3E5B317F47AF2 /* SeeliApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B40F4692EEE035649DF7222B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E2E4C4233A1D64BBDE741D4A /* Seeli.app */,
+				77440650927104C912815D66 /* SeeliWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BDD3142775F443BB352B1580 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				ECE1651CFB7CA6855BE58724 /* AuthViews.swift */,
+				6872BB5AAD2C935AA42D6A21 /* CameraView.swift */,
+				FC37E7ABB63F0B1C288D327E /* ConnectView.swift */,
+				8009344214D5DE504007327E /* HomeView.swift */,
+				84C165590E8B5EDB844A5D99 /* MemoriesView.swift */,
+				3377551A407760ABACDF3003 /* PostFlow.swift */,
+				21841197521690E7FE815BCD /* ProfileViews.swift */,
+				33EBBA1F39E45ABFB70E52D8 /* QRViews.swift */,
+				2CD1689A81D99E4C04DE4775 /* ReunionView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		E2623AD3E999D05A0F73BB57 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8CC06D08B8D27143772F4AA2 /* Components.swift */,
+				C898ADAA47FFA66419A2144E /* Landscape.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		07A570E82B073B95BFB57453 /* SeeliWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50B73D09AE2D0BBEED6C2F8D /* Build configuration list for PBXNativeTarget "SeeliWidget" */;
+			buildPhases = (
+				14D9F51A3A74E969E441B8C5 /* Sources */,
+				34BD6A841444F4A9E4070DED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SeeliWidget;
+			packageProductDependencies = (
+			);
+			productName = SeeliWidget;
+			productReference = 77440650927104C912815D66 /* SeeliWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		ED2271AB49BA5598F2B86BE2 /* Seeli */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB474F7CBC85119767FA7616 /* Build configuration list for PBXNativeTarget "Seeli" */;
+			buildPhases = (
+				C9ED13034B0427D16DFFC833 /* Sources */,
+				844C62B11A926ECB4C6A3122 /* Resources */,
+				93056E902C46BE1812DF4B5E /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C34C24390B455DF261368C4E /* PBXTargetDependency */,
+			);
+			name = Seeli;
+			packageProductDependencies = (
+			);
+			productName = Seeli;
+			productReference = E2E4C4233A1D64BBDE741D4A /* Seeli.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D6E0BF38C267CAB0FD1B9A60 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					07A570E82B073B95BFB57453 = {
+						DevelopmentTeam = 62H5L8QDTS;
+						ProvisioningStyle = Automatic;
+					};
+					ED2271AB49BA5598F2B86BE2 = {
+						DevelopmentTeam = 62H5L8QDTS;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 79744F759696D0DB5C1FB599 /* Build configuration list for PBXProject "Seeli" */;
+			developmentRegion = vi;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				ja,
+				vi,
+			);
+			mainGroup = 5B735D10DC4CE0BE37D58B2E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B40F4692EEE035649DF7222B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ED2271AB49BA5598F2B86BE2 /* Seeli */,
+				07A570E82B073B95BFB57453 /* SeeliWidget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		34BD6A841444F4A9E4070DED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF6D406F1C5AF23E6792401A /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		844C62B11A926ECB4C6A3122 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				24C911017459207CAEF66192 /* Assets.xcassets in Resources */,
+				28328E5C86417AF1958BDC58 /* InfoPlist.strings in Resources */,
+				5F7ED62E19C1C0ED47CFC3DD /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		14D9F51A3A74E969E441B8C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22E3040D458AC4FB4DD831F1 /* DateText.swift in Sources */,
+				F2853A728263C0BC3E9C6659 /* L10n.swift in Sources */,
+				9FC31FDADA33FCBEE94F8BDB /* SeeliWidgets.swift in Sources */,
+				9A7A267BBD938BAB55840F41 /* Theme.swift in Sources */,
+				61433CE5BAEE59F88673E1AC /* VerticalText.swift in Sources */,
+				E022B09732A690FD4B762C4D /* WidgetData.swift in Sources */,
+				920E314E3399EC062DEEC80A /* WidgetViews.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C9ED13034B0427D16DFFC833 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AC2B2F74299164151279FE4 /* APIClient.swift in Sources */,
+				4D123961601387905F15044D /* AppStore.swift in Sources */,
+				A3AC932AA4647697BC4C9769 /* AuthViews.swift in Sources */,
+				AAE564D81E7D72CF75F22AA3 /* CameraView.swift in Sources */,
+				7DA8378C2C1264E9FB1FE6BC /* Components.swift in Sources */,
+				3619F9A8D3B52ADE7B093BBE /* ConnectView.swift in Sources */,
+				8388B59F69293D77B580068D /* DateText.swift in Sources */,
+				FE79B44DDF9A1A2F42671146 /* HomeView.swift in Sources */,
+				B4614E58982276CE8F6D1555 /* L10n.swift in Sources */,
+				0C56EF6E73BA64743465D2E4 /* Landscape.swift in Sources */,
+				AB869E6A0A63B7362839014C /* MemoriesView.swift in Sources */,
+				D81018EE68796BD861A16B2D /* Models.swift in Sources */,
+				38FA3B6D436F199E16B561EB /* PostFlow.swift in Sources */,
+				12EF6616FDE77D73F6988398 /* ProfileViews.swift in Sources */,
+				2ABB18C26FFC82CE4B96D3E1 /* QRViews.swift in Sources */,
+				A2403027AF17EF4958CD6983 /* ReunionView.swift in Sources */,
+				F986307A9F25FEE3E5721276 /* SeeliApp.swift in Sources */,
+				A1FB773FE35344C1E98954B1 /* Services.swift in Sources */,
+				11C754C54BEA3C1748278781 /* Theme.swift in Sources */,
+				FC2C4E30B682D346E0F4A5BC /* VerticalText.swift in Sources */,
+				8BA30E09B2FC28414442C75A /* WidgetData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C34C24390B455DF261368C4E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 07A570E82B073B95BFB57453 /* SeeliWidget */;
+			targetProxy = DE2ED13322B67D9F1B248981 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		46F0B314E698ECA4F17C415D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FEAA68AE8AA70B6069212865 /* ja */,
+				83BBC50B839E58AACBF02F90 /* vi */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		96E4ECB991557B04C6E07547 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1BF26A4F69E214F7C1E19948 /* ja */,
+				69655235D504172BD970D415 /* vi */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		B06DF86D8D510B6D37C3E767 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6018D7C28B74DCB63713E11F /* ja */,
+				7F548C0516FD0839091FCB19 /* vi */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		221590D4A88DA4BACD2A5AD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Seeli/Seeli.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 62H5L8QDTS;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Seeli/Info.plist;
+				INFOPLIST_KEY_CFBundleAllowMixedLocalizations = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SEELI;
+				INFOPLIST_KEY_NSCameraUsageDescription = "SEELI dùng camera để bạn ghi lại những gì mình nhìn thấy và quét mã QR kết bạn.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SEELI ghi lại nơi bạn chụp ảnh. Thông tin này chỉ lưu trong ký ức của riêng bạn.";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tunnaduong.seeli;
+				SDKROOT = iphoneos;
+				SEELI_API_URL = "https://seeli-api.tunnaduong.com";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		32934B7340FEB511B40F20E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		7CAF6634E471C4B7FE090622 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SeeliWidget/SeeliWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 62H5L8QDTS;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SeeliWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tunnaduong.seeli.widget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A5D4A8134E6399F784DDFB5A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SeeliWidget/SeeliWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 62H5L8QDTS;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SeeliWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tunnaduong.seeli.widget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A7682B44DFDEF8F4B8E1EC7F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Seeli/Seeli.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 62H5L8QDTS;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Seeli/Info.plist;
+				INFOPLIST_KEY_CFBundleAllowMixedLocalizations = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SEELI;
+				INFOPLIST_KEY_NSCameraUsageDescription = "SEELI dùng camera để bạn ghi lại những gì mình nhìn thấy và quét mã QR kết bạn.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SEELI ghi lại nơi bạn chụp ảnh. Thông tin này chỉ lưu trong ký ức của riêng bạn.";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tunnaduong.seeli;
+				SDKROOT = iphoneos;
+				SEELI_API_URL = "https://seeli-api.tunnaduong.com";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		FC112C6072300C6CE8ECA5C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		50B73D09AE2D0BBEED6C2F8D /* Build configuration list for PBXNativeTarget "SeeliWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5D4A8134E6399F784DDFB5A /* Debug */,
+				7CAF6634E471C4B7FE090622 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		79744F759696D0DB5C1FB599 /* Build configuration list for PBXProject "Seeli" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC112C6072300C6CE8ECA5C4 /* Debug */,
+				32934B7340FEB511B40F20E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CB474F7CBC85119767FA7616 /* Build configuration list for PBXNativeTarget "Seeli" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7682B44DFDEF8F4B8E1EC7F /* Debug */,
+				221590D4A88DA4BACD2A5AD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D6E0BF38C267CAB0FD1B9A60 /* Project object */;
+}

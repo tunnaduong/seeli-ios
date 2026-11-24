@@ -1,0 +1,16 @@
+"home.question" = "Hôm nay, bạn đã nhìn thấy gì?";
+"widget.inline" = "Hôm nay bạn thấy gì?";
+"widget.reunion.title" = "Một khoảnh khắc đã quay lại";
+"widget.reunion.tap" = "Chạm để gặp lại";
+"widget.reunion.count" = "%d khoảnh khắc đang chờ bạn";
+"widget.sleeping" = "%d khoảnh khắc đang ngủ yên";
+"widget.sleeping.hint" = "Chúng sẽ quay lại vào lúc bạn không ngờ tới.";
+"widget.calm" = "Không có gì cần xem lúc này. Hãy nhìn quanh bạn.";
+"widget.wordsOfDay" = "Lời của ngày hôm ấy";
+"widget.words.empty" = "Những lời bạn để lại khi chụp ảnh sẽ xuất hiện ở đây.";
+"widget.signedOut" = "Mở SEELI để bắt đầu.";
+"widget.today.name" = "Hôm nay";
+"widget.today.desc" = "Chụp nhanh điều bạn thấy, và biết khi một khoảnh khắc quay lại.";
+"widget.words.name" = "Lời của ngày hôm ấy";
+"widget.words.desc" = "Một lời bạn từng để lại — không phải ảnh, mà là con chữ.";
+"widget.lock.desc" = "Nhắc bạn nhìn thế giới, và báo khi một khoảnh khắc quay lại.";
