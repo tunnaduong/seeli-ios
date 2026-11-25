@@ -3,6 +3,7 @@ import SwiftUI
 struct ConnectView: View {
     @Environment(AppStore.self) private var store
     @State private var commenting: FriendPost?
+    @State private var viewing: FriendPost?
 
     var body: some View {
         SeeliScreen(title: "LET'S CONNECT", subtitle: t("connect.subtitle")) {
@@ -38,6 +39,7 @@ struct ConnectView: View {
                         LazyVStack(spacing: 20) {
                             ForEach(store.visiblePosts) { post in
                                 FriendPostCard(post: post,
+                                               onOpen: { viewing = post },
                                                onComment: { commenting = post },
                                                onProfile: {
                                                    if store.friend(post.author.id) != nil { store.path.append(.friend(post.author.id)) }
@@ -53,7 +55,11 @@ struct ConnectView: View {
         }
         .task { await store.refresh() }
         // Friends' photos are seen once: leaving this screen lets them go.
-        .onDisappear { store.forgetOncePhotos() }
+        // (The full-screen viewer covers this screen too; that is not leaving it.)
+        .onDisappear { if viewing == nil { store.forgetOncePhotos() } }
+        .fullScreenCover(item: $viewing) { post in
+            OncePhotoViewer(post: post)
+        }
         .sheet(item: $commenting) { post in
             PerspectiveSheet(post: post)
                 .presentationDetents([.medium])
@@ -63,6 +69,7 @@ struct ConnectView: View {
 
 struct FriendPostCard: View {
     var post: FriendPost
+    var onOpen: () -> Void
     var onComment: () -> Void
     var onProfile: () -> Void
 
@@ -70,7 +77,7 @@ struct FriendPostCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            OncePhotoTile(post: post)
+            OncePhotoTile(post: post, onOpen: onOpen)
                 .frame(height: 250)
                 .clipShape(RoundedRectangle(cornerRadius: 6))
                 .overlay(alignment: .topTrailing) { Chip(text: "MY CIRCLE").padding(10) }
@@ -194,17 +201,26 @@ private struct PerspectiveSheet: View {
 private struct OncePhotoTile: View {
     @Environment(AppStore.self) private var store
     var post: FriendPost
+    var onOpen: () -> Void
+    @Environment(\.scenePhase) private var scenePhase
     @State private var loading = false
 
     var body: some View {
         ZStack {
             Landscape(scene: post.scene)
-            if let image = store.onceImages[post.id] {
-                Image(uiImage: image).resizable().scaledToFill()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .clipped()
+            // Not active = the app switcher is about to snapshot the screen; show the landscape instead.
+            if let image = store.onceImages[post.id], scenePhase == .active {
+                GeometryReader { geo in
+                    ScreenshotShield {
+                        Image(uiImage: image).resizable().scaledToFill()
+                            .frame(width: geo.size.width, height: geo.size.height)
+                            .clipped()
+                    }
+                }
+                    .contentShape(Rectangle())
+                    .onTapGesture(perform: onOpen)
                     .overlay(alignment: .bottomLeading) {
-                        Label(t("connect.once.now"), systemImage: "eye")
+                        Label(t("connect.once.now"), systemImage: "arrow.up.left.and.arrow.down.right")
                             .font(.system(size: 10, weight: .medium))
                             .foregroundStyle(.white)
                             .padding(.horizontal, 10).padding(.vertical, 6)

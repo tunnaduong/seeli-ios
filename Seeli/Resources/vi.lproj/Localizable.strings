@@ -253,3 +253,4 @@
 "comments.reply.yours" = "Bạn đã trả lời";
 "comments.reply.edit" = "Sửa";
 "connect.reply.from" = "%@ đã trả lời";
+"connect.once.protected" = "Ảnh được bảo vệ, không chụp hay quay màn hình được";

@@ -253,3 +253,4 @@
 "comments.reply.yours" = "あなたの返信";
 "comments.reply.edit" = "編集";
 "connect.reply.from" = "%@さんからの返信";
+"connect.once.protected" = "スクリーンショット・画面収録はできません";
