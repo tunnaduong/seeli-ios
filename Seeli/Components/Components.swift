@@ -143,6 +143,8 @@ struct MenuRow: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(title).font(.system(size: 15, weight: .medium)).foregroundStyle(tint)
                 Text(subtitle).font(.system(size: 12)).foregroundStyle(Color.seeliMuted)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             Spacer()
             if chevron {

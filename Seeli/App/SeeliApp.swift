@@ -2,6 +2,7 @@ import SwiftUI
 
 @main
 struct SeeliApp: App {
+    @UIApplicationDelegateAdaptor(SeeliAppDelegate.self) private var appDelegate
     @State private var store = AppStore()
     @Environment(\.scenePhase) private var scenePhase
 
@@ -17,7 +18,7 @@ struct SeeliApp: App {
                         store.refreshClock()
                         Task { await store.refresh() }
                     }
-                    if phase == .background { store.updateWidgets() }
+                    if phase == .background { store.updateWidgets(); store.forgetOncePhotos() }
                 }
         }
     }

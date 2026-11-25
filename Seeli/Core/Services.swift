@@ -68,6 +68,38 @@ final class LocationService: NSObject, CLLocationManagerDelegate {
     }
 }
 
+extension Notification.Name {
+    static let seeliDeviceToken = Notification.Name("seeli.deviceToken")
+    static let seeliOpenConnect = Notification.Name("seeli.openConnect")
+}
+
+/// Receives the APNs device token and notification taps, and hands them to AppStore.
+final class SeeliAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        UNUserNotificationCenter.current().delegate = self
+        return true
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let hex = deviceToken.map { String(format: "%02x", $0) }.joined()
+        NotificationCenter.default.post(name: .seeliDeviceToken, object: hex)
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {}
+
+    /// Show banners while the app is open too.
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async
+        -> UNNotificationPresentationOptions { [.banner, .sound, .list] }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        let info = response.notification.request.content.userInfo
+        if info["type"] as? String == "friend_post" {
+            await MainActor.run { NotificationCenter.default.post(name: .seeliOpenConnect, object: nil) }
+        }
+    }
+}
+
 enum NotificationService {
     static func requestPermission() async -> Bool {
         (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])) ?? false

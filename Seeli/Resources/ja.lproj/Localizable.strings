@@ -243,3 +243,6 @@
 "connect.once.confirm.ok" = "いま見る";
 "common.cancel.later" = "あとで";
 "error.already_viewed" = "この写真はもう見ました。ひとつの瞬間は一度だけ。";
+"connect.once.now" = "今回だけ";
+"settings.notifications.friends" = "友だちが瞬間をシェアしたとき";
+"settings.notifications.friends.hint" = "サークルの友だちが写真を投稿したら通知します。友だちの写真は一度だけ見られます。";

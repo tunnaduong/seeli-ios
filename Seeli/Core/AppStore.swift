@@ -18,6 +18,8 @@ final class AppStore {
     var moments: [Moment] = []
     var friends: [Friend] = []
     var friendPosts: [FriendPost] = []
+    /// Friends' photos opened in this visit to Let's connect. Memory only, never saved.
+    var onceImages: [String: UIImage] = [:]
     var blocked: [PublicUser] = []
     var outbox: [PendingUpload] = []
 
@@ -27,6 +29,9 @@ final class AppStore {
     /// Whether the server allows demo mode (ALLOW_DEMO). Hidden in Settings when false.
     var serverAllowsDemo = false
     var notificationsEnabled = true
+    /// Push when a friend shares to the circle.
+    var friendPushEnabled = true
+    @ObservationIgnored private var deviceToken: String?
 
     // Session (not persisted)
     @ObservationIgnored var draft = Draft()
@@ -53,6 +58,7 @@ final class AppStore {
         var defaultAudience: Audience
         var demoMode: Bool
         var notificationsEnabled: Bool
+        var friendPushEnabled: Bool?
     }
 
     private static var documents: URL { FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0] }
@@ -70,6 +76,42 @@ final class AppStore {
             guard let self, self.account != nil else { return }
             self.clearSession()
         }
+        NotificationCenter.default.addObserver(forName: .seeliDeviceToken, object: nil, queue: .main) { [weak self] note in
+            guard let self, let token = note.object as? String else { return }
+            self.deviceToken = token
+            Task { await self.sendDeviceToken() }
+        }
+        NotificationCenter.default.addObserver(forName: .seeliOpenConnect, object: nil, queue: .main) { [weak self] _ in
+            guard let self, self.isLoggedIn else { return }
+            self.path = [.connect]
+        }
+    }
+
+    // MARK: Push (friend shared a moment)
+
+    /// Asks for permission once there is someone to hear from, then registers with APNs.
+    func enableFriendPush() async {
+        guard isLoggedIn, friendPushEnabled, !friends.isEmpty else { return }
+        guard await NotificationService.requestPermission() else { return }
+        await MainActor.run { UIApplication.shared.registerForRemoteNotifications() }
+    }
+
+    private func sendDeviceToken() async {
+        guard isLoggedIn, friendPushEnabled, let deviceToken else { return }
+        #if DEBUG
+        let env = "sandbox"
+        #else
+        let env = "production"
+        #endif
+        let lang = L10n.shared.language == .ja ? "ja" : "vi"
+        try? await api.request("PUT", "me/device", body: ["token": deviceToken, "env": env, "lang": lang])
+    }
+
+    func setFriendPush(_ on: Bool) async {
+        friendPushEnabled = on
+        save()
+        if on { await enableFriendPush() }
+        else if let deviceToken { try? await api.request("DELETE", "me/device", body: ["token": deviceToken]) }
     }
 
     // MARK: Persistence
@@ -86,12 +128,14 @@ final class AppStore {
         defaultAudience = s.defaultAudience
         demoMode = s.demoMode
         notificationsEnabled = s.notificationsEnabled
+        friendPushEnabled = s.friendPushEnabled ?? true
     }
 
     func save() {
         let s = Snapshot(account: account, moments: moments, friends: friends, friendPosts: friendPosts,
                          blocked: blocked, outbox: outbox, defaultAudience: defaultAudience,
-                         demoMode: demoMode, notificationsEnabled: notificationsEnabled)
+                         demoMode: demoMode, notificationsEnabled: notificationsEnabled,
+                         friendPushEnabled: friendPushEnabled)
         if let data = try? JSONEncoder().encode(s) {
             try? data.write(to: fileURL, options: [.atomic, .completeFileProtection])
         }
@@ -264,6 +308,7 @@ final class AppStore {
         if let bl { blocked = bl }
         refreshClock()
         save()
+        await enableFriendPush()
     }
 
     private func rescheduleNotifications() {
@@ -483,6 +528,24 @@ final class AppStore {
             return nil
         }
     }
+
+    /// Fetches a friend's photo once, straight into memory (no URL cache, no disk).
+    func loadOncePhoto(postID: String) async {
+        guard let url = await openOncePhoto(postID: postID) else { return }
+        let session = URLSession(configuration: .ephemeral)
+        var req = URLRequest(url: url)
+        req.cachePolicy = .reloadIgnoringLocalCacheData
+        for attempt in 0..<3 {
+            if let (data, resp) = try? await session.data(for: req),
+               (resp as? HTTPURLResponse)?.statusCode == 200, let img = UIImage(data: data) {
+                onceImages[postID] = img
+                return
+            }
+            if attempt < 2 { try? await Task.sleep(for: .seconds(1)) }
+        }
+    }
+
+    func forgetOncePhotos() { onceImages.removeAll() }
 
     private func markViewed(_ postID: String, at date: Date) {
         guard let i = friendPosts.firstIndex(where: { $0.id == postID }), friendPosts[i].viewedAt == nil else { return }

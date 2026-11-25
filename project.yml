@@ -37,6 +37,7 @@ targets:
       properties:
         com.apple.security.application-groups: [group.com.tunnaduong.seeli]
         com.apple.developer.applesignin: [Default]
+        aps-environment: development
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tunnaduong.seeli

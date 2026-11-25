@@ -353,6 +353,12 @@ struct SettingsView: View {
                                 store.save()
                             }
                         Text(t("settings.notifications.hint")).font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
+                        Toggle(t("settings.notifications.friends"), isOn: Binding(
+                            get: { store.friendPushEnabled },
+                            set: { on in Task { await store.setFriendPush(on) } }))
+                            .tint(.seeliGreen)
+                            .padding(.top, 6)
+                        Text(t("settings.notifications.friends.hint")).font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
                     }
 
                     if store.serverAllowsDemo {
