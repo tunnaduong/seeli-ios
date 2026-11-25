@@ -465,6 +465,31 @@ final class AppStore {
         await attempt({ try await api.request("POST", "reports", body: ["userId": id, "reason": "user_report"]) }) != nil
     }
 
+    private struct ViewResponse: Decodable { var photoUrl: String; var viewedAt: Date }
+
+    /// Opens a friend's photo. The server records the view, so it works only once.
+    func openOncePhoto(postID: String) async -> URL? {
+        do {
+            let r = try await api.request("POST", "moments/\(postID)/view", as: ViewResponse.self)
+            lastError = nil
+            markViewed(postID, at: r.viewedAt)
+            return URL(string: r.photoUrl)
+        } catch let e as APIError where e.code == "already_viewed" {
+            markViewed(postID, at: Date())
+            lastError = e.errorDescription
+            return nil
+        } catch {
+            lastError = (error as? LocalizedError)?.errorDescription ?? t("error.generic")
+            return nil
+        }
+    }
+
+    private func markViewed(_ postID: String, at date: Date) {
+        guard let i = friendPosts.firstIndex(where: { $0.id == postID }), friendPosts[i].viewedAt == nil else { return }
+        friendPosts[i].viewedAt = date
+        save()
+    }
+
     func sendPerspective(postID: String, text: String) async -> Bool {
         let clean = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !clean.isEmpty,

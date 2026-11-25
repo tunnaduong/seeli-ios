@@ -230,3 +230,16 @@
 "error.provider_disabled" = "Cách đăng nhập này chưa được bật.";
 "error.invalid_token" = "Không xác minh được tài khoản. Hãy thử lại.";
 "error.provider_unreachable" = "Không kết nối được tới Apple/Google. Hãy thử lại sau.";
+
+/* One-time view of a friend's photo */
+"connect.once.tap" = "Chạm để xem";
+"connect.once.hint" = "Ảnh chỉ mở được một lần";
+"connect.once.seen" = "Bạn đã xem khoảnh khắc này";
+"connect.once.seen.at" = "Đã xem · %@";
+"connect.once.viewer" = "Chỉ lần này thôi. Khi đóng lại, ảnh sẽ không mở lại được nữa.";
+"connect.once.close" = "Cất ảnh lại";
+"connect.once.confirm.title" = "Chỉ được xem một lần";
+"connect.once.confirm.body" = "Sau khi đóng, bạn sẽ không mở lại ảnh này được nữa. Hãy nhìn thật kỹ nhé.";
+"connect.once.confirm.ok" = "Xem ngay";
+"common.cancel.later" = "Để sau";
+"error.already_viewed" = "Bạn đã xem ảnh này rồi. Mỗi khoảnh khắc chỉ được nhìn một lần.";

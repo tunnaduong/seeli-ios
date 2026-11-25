@@ -230,3 +230,16 @@
 "error.provider_disabled" = "このログイン方法はまだ利用できません。";
 "error.invalid_token" = "アカウントを確認できませんでした。もう一度お試しください。";
 "error.provider_unreachable" = "Apple/Googleに接続できません。しばらくしてからお試しください。";
+
+/* One-time view of a friend's photo */
+"connect.once.tap" = "タップして見る";
+"connect.once.hint" = "写真は一度だけ開けます";
+"connect.once.seen" = "この瞬間はもう見ました";
+"connect.once.seen.at" = "見た日 · %@";
+"connect.once.viewer" = "一度きりです。閉じると、もう二度と開けません。";
+"connect.once.close" = "写真をしまう";
+"connect.once.confirm.title" = "見られるのは一度だけ";
+"connect.once.confirm.body" = "閉じたら、この写真はもう開けません。ゆっくり見てください。";
+"connect.once.confirm.ok" = "いま見る";
+"common.cancel.later" = "あとで";
+"error.already_viewed" = "この写真はもう見ました。ひとつの瞬間は一度だけ。";

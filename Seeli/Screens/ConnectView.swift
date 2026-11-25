@@ -68,19 +68,8 @@ struct FriendPostCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ZStack {
-                Landscape(scene: post.scene)
-                // The real photo appears only once its reveal date has passed.
-                if let url = post.photoUrl.flatMap(URL.init(string:)) {
-                    AsyncImage(url: url) { phase in
-                        if let image = phase.image {
-                            image.resizable().scaledToFill()
-                        }
-                    }
-                }
-            }
+            OncePhotoTile(post: post)
                 .frame(height: 250)
-                .clipped()
                 .clipShape(RoundedRectangle(cornerRadius: 6))
                 .overlay(alignment: .topTrailing) { Chip(text: "MY CIRCLE").padding(10) }
 
@@ -181,5 +170,119 @@ private struct PerspectiveSheet: View {
         .padding(24)
         .background(Color.seeliBG.ignoresSafeArea())
         .onAppear { text = post.myComment ?? "" }
+    }
+}
+
+/// A friend's photo: closed until tapped, then gone for good once seen.
+private struct OncePhotoTile: View {
+    @Environment(AppStore.self) private var store
+    var post: FriendPost
+    @State private var confirming = false
+    @State private var opening = false
+    @State private var photoURL: URL?
+
+    var body: some View {
+        Button { confirming = true } label: {
+            ZStack {
+                Landscape(scene: post.scene)
+                Color.seeliInk.opacity(post.viewedAt == nil ? 0.28 : 0.45)
+                VStack(spacing: 8) {
+                    if opening {
+                        ProgressView().tint(.white)
+                    } else if let seen = post.viewedAt {
+                        Image(systemName: "eye.slash").font(.system(size: 24, weight: .light))
+                        Text(t("connect.once.seen")).font(.system(size: 14, weight: .medium))
+                        Text(tf("connect.once.seen.at", DateText.stamp(seen))).font(.system(size: 11)).opacity(0.85)
+                    } else {
+                        Image(systemName: "eye").font(.system(size: 24, weight: .light))
+                        Text(t("connect.once.tap")).font(.system(size: 15, weight: .semibold))
+                        Text(t("connect.once.hint")).font(.system(size: 11)).opacity(0.9)
+                    }
+                }
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 20)
+            }
+        }
+        .buttonStyle(.plain)
+        .disabled(post.viewedAt != nil || opening)
+        .alert(t("connect.once.confirm.title"), isPresented: $confirming) {
+            Button(t("common.cancel.later"), role: .cancel) {}
+            Button(t("connect.once.confirm.ok")) { open() }
+        } message: {
+            Text(t("connect.once.confirm.body"))
+        }
+        .fullScreenCover(item: $photoURL) { url in
+            OncePhotoViewer(url: url, note: post.note)
+        }
+    }
+
+    private func open() {
+        opening = true
+        Task {
+            photoURL = await store.openOncePhoto(postID: post.id)
+            opening = false
+        }
+    }
+}
+
+extension URL: @retroactive Identifiable {
+    public var id: String { absoluteString }
+}
+
+/// Full-screen, one-time view. Nothing is cached; it hides when the app leaves the foreground.
+private struct OncePhotoViewer: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
+    var url: URL
+    var note: String
+    @State private var image: UIImage?
+    @State private var failed = false
+
+    var body: some View {
+        ZStack {
+            Color.black.ignoresSafeArea()
+            if let image, scenePhase == .active {
+                Image(uiImage: image).resizable().scaledToFit()
+            } else if failed {
+                Text(t("error.generic")).font(.system(size: 13)).foregroundStyle(.white.opacity(0.7))
+            } else if image == nil {
+                ProgressView().tint(.white)
+            }
+            VStack(spacing: 14) {
+                Spacer()
+                if !note.isEmpty {
+                    Text(note).font(SeeliFont.mincho(15)).foregroundStyle(.white)
+                        .multilineTextAlignment(.center)
+                }
+                Text(t("connect.once.viewer")).font(.system(size: 11)).foregroundStyle(.white.opacity(0.7))
+                    .multilineTextAlignment(.center)
+                Button(t("connect.once.close")) { dismiss() }
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 28).padding(.vertical, 12)
+                    .background(Capsule().stroke(.white.opacity(0.6)))
+            }
+            .padding(.horizontal, 32)
+            .padding(.bottom, 24)
+        }
+        .statusBarHidden()
+        .task { await load() }
+    }
+
+    private func load() async {
+        // Ephemeral session: the photo is never written to the URL cache or disk.
+        let session = URLSession(configuration: .ephemeral)
+        var req = URLRequest(url: url)
+        req.cachePolicy = .reloadIgnoringLocalCacheData
+        for _ in 0..<3 {
+            if let (data, resp) = try? await session.data(for: req),
+               (resp as? HTTPURLResponse)?.statusCode == 200, let img = UIImage(data: data) {
+                image = img
+                return
+            }
+            try? await Task.sleep(for: .seconds(1))
+        }
+        failed = true
     }
 }

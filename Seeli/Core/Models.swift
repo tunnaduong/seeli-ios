@@ -75,6 +75,8 @@ struct FriendPost: Identifiable, Codable, Hashable {
     var photoUrl: String?
     var myComment: String?
     var scene: Int
+    /// When I opened this photo. A friend's photo can be opened only once.
+    var viewedAt: Date?
 }
 
 struct UserAccount: Codable, Hashable {
