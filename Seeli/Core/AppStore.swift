@@ -311,6 +311,15 @@ final class AppStore {
         await enableFriendPush()
     }
 
+    /// Pull-to-refresh. Waits for a sync already in flight, then fetches again, in a task
+    /// the gesture can't cancel (a cancelled refresh used to drop every request).
+    func pullRefresh() async {
+        await Task { @MainActor in
+            while isSyncing { try? await Task.sleep(for: .milliseconds(150)) }
+            await refresh()
+        }.value
+    }
+
     private func rescheduleNotifications() {
         guard notificationsEnabled else { return }
         for m in moments where m.reunitedAt == nil && m.revealAt > Date() {
@@ -429,6 +438,15 @@ final class AppStore {
         NotificationService.cancel(id)
         moments.removeAll { $0.id == id }
         save()
+    }
+
+    /// The owner answers a friend's perspective on their photo.
+    func replyToComment(momentID: String, commentID: String, text: String) async -> Comment.Reply? {
+        let clean = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !clean.isEmpty else { return nil }
+        return await attempt({
+            try await api.request("PUT", "moments/\(momentID)/comments/\(commentID)/reply", body: ["text": clean], as: Comment.Reply.self)
+        })
     }
 
     func comments(for id: String) async -> [Comment] {

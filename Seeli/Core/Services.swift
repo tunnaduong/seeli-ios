@@ -94,7 +94,7 @@ final class SeeliAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificatio
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         let info = response.notification.request.content.userInfo
-        if info["type"] as? String == "friend_post" {
+        if ["friend_post", "comment_reply"].contains(info["type"] as? String ?? "") {
             await MainActor.run { NotificationCenter.default.post(name: .seeliOpenConnect, object: nil) }
         }
     }

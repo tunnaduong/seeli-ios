@@ -246,3 +246,10 @@
 "connect.once.now" = "今回だけ";
 "settings.notifications.friends" = "友だちが瞬間をシェアしたとき";
 "settings.notifications.friends.hint" = "サークルの友だちが写真を投稿したら通知します。友だちの写真は一度だけ見られます。";
+
+"comments.reply" = "返信する";
+"comments.reply.placeholder" = "返事を書く…";
+"comments.reply.send" = "送る";
+"comments.reply.yours" = "あなたの返信";
+"comments.reply.edit" = "編集";
+"connect.reply.from" = "%@さんからの返信";

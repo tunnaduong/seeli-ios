@@ -246,3 +246,10 @@
 "connect.once.now" = "Chỉ lần này";
 "settings.notifications.friends" = "Khi bạn bè chia sẻ khoảnh khắc";
 "settings.notifications.friends.hint" = "Nhận thông báo khi người trong vòng tròn của bạn đăng ảnh. Ảnh của bạn bè chỉ xem được một lần.";
+
+"comments.reply" = "Trả lời";
+"comments.reply.placeholder" = "Viết lời đáp…";
+"comments.reply.send" = "Gửi";
+"comments.reply.yours" = "Bạn đã trả lời";
+"comments.reply.edit" = "Sửa";
+"connect.reply.from" = "%@ đã trả lời";

@@ -49,7 +49,7 @@ struct ConnectView: View {
                 .padding(.horizontal, 24)
                 .padding(.bottom, 30)
             }
-            .refreshable { await store.refresh() }
+            .refreshable { await store.pullRefresh() }
         }
         .task { await store.refresh() }
         // Friends' photos are seen once: leaving this screen lets them go.
@@ -88,6 +88,20 @@ struct FriendPostCard: View {
                             Text(t("connect.sent")).font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
                             Text(mine).font(.system(size: 14)).foregroundStyle(Color.seeliInk)
                         }
+                    }
+                    if let answer = post.myCommentReply {
+                        HStack(alignment: .top, spacing: 10) {
+                            Avatar(initial: post.author.initial, size: 22)
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(tf("connect.reply.from", post.author.name)).font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
+                                Text(answer).font(.system(size: 14)).foregroundStyle(Color.seeliInk)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                        }
+                        .padding(12)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .seeliCard(.seeliCard, radius: 14, border: false)
+                        .padding(.leading, 30)
                     }
                 } else {
                     Label(t("connect.prompt"), systemImage: "bubble.left")

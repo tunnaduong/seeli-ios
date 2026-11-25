@@ -34,6 +34,16 @@ struct Comment: Identifiable, Codable, Hashable {
     var text: String
     var createdAt: Date
     var author: PublicUser
+    /// The photo owner's answer, seen only by this friend.
+    var reply: String?
+    var repliedAt: Date?
+}
+
+extension Comment {
+    struct Reply: Codable, Hashable {
+        var reply: String
+        var repliedAt: Date
+    }
 }
 
 /// A photo the user took. The server only sends `photoUrl` once `revealAt` has passed.
@@ -74,6 +84,9 @@ struct FriendPost: Identifiable, Codable, Hashable {
     var revealed: Bool
     var photoUrl: String?
     var myComment: String?
+    /// The author's answer to my perspective.
+    var myCommentReply: String?
+    var myCommentRepliedAt: Date?
     var scene: Int
     /// When I opened this photo. A friend's photo can be opened only once.
     var viewedAt: Date?

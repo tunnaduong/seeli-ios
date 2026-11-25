@@ -190,6 +190,10 @@ private struct CommentsSheet: View {
     var moment: Moment
     @State private var comments: [Comment] = []
     @State private var loading = true
+    @State private var replyingTo: String?
+    @State private var draft = ""
+    @State private var sending = false
+    @FocusState private var focused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -209,18 +213,7 @@ private struct CommentsSheet: View {
             } else {
                 ScrollView {
                     VStack(spacing: 12) {
-                        ForEach(comments) { c in
-                            HStack(alignment: .top, spacing: 10) {
-                                Avatar(initial: c.author.initial, size: 32)
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(c.author.name).font(.system(size: 13, weight: .semibold))
-                                    Text(c.text).font(.system(size: 14))
-                                }
-                                Spacer()
-                            }
-                            .padding(12)
-                            .seeliCard(radius: 14)
-                        }
+                        ForEach(comments) { c in commentCard(c) }
                     }
                 }
             }
@@ -230,6 +223,83 @@ private struct CommentsSheet: View {
         .task {
             if moment.isPending != true { comments = await store.comments(for: moment.id) }
             loading = false
+        }
+    }
+
+    private func commentCard(_ c: Comment) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .top, spacing: 10) {
+                Avatar(initial: c.author.initial, size: 32)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(c.author.name).font(.system(size: 13, weight: .semibold))
+                    Text(c.text).font(.system(size: 14)).fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+            }
+            if replyingTo == c.id {
+                HStack(alignment: .bottom, spacing: 8) {
+                    TextField(t("comments.reply.placeholder"), text: $draft, axis: .vertical)
+                        .lineLimit(1...4)
+                        .font(.system(size: 14))
+                        .focused($focused)
+                        .padding(.horizontal, 12).padding(.vertical, 9)
+                        .seeliCard(.seeliCard, radius: 12, border: false)
+                    Button { send(to: c) } label: {
+                        if sending { ProgressView().tint(.white).frame(width: 36, height: 36) }
+                        else { Image(systemName: "arrow.up").font(.system(size: 14, weight: .semibold)).frame(width: 36, height: 36) }
+                    }
+                    .foregroundStyle(.white)
+                    .background(Circle().fill(Color.seeliGreen.opacity(canSend ? 1 : 0.4)))
+                    .disabled(!canSend)
+                }
+                .padding(.leading, 42)
+            } else if let answer = c.reply {
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text(t("comments.reply.yours")).font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
+                        Spacer()
+                        Button(t("comments.reply.edit")) { startReply(c) }
+                            .font(.system(size: 11, weight: .medium)).foregroundStyle(Color.seeliGreen)
+                    }
+                    Text(answer).font(.system(size: 14)).foregroundStyle(Color.seeliInk)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .seeliCard(.seeliCard, radius: 12, border: false)
+                .padding(.leading, 42)
+            } else {
+                Button { startReply(c) } label: {
+                    Label(t("comments.reply"), systemImage: "arrowshape.turn.up.left")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(Color.seeliGreen)
+                }
+                .padding(.leading, 42)
+            }
+        }
+        .padding(12)
+        .seeliCard(radius: 14)
+    }
+
+    private var canSend: Bool { !sending && !draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+
+    private func startReply(_ c: Comment) {
+        draft = c.reply ?? ""
+        replyingTo = c.id
+        focused = true
+    }
+
+    private func send(to c: Comment) {
+        sending = true
+        Task {
+            if let r = await store.replyToComment(momentID: moment.id, commentID: c.id, text: draft),
+               let i = comments.firstIndex(where: { $0.id == c.id }) {
+                comments[i].reply = r.reply
+                comments[i].repliedAt = r.repliedAt
+                replyingTo = nil
+                draft = ""
+            }
+            sending = false
         }
     }
 }
