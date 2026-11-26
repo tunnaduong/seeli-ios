@@ -256,3 +256,4 @@
 "connect.once.protected" = "Ảnh được bảo vệ, không chụp hay quay màn hình được";
 "notification.comment" = "%@ đã gửi góc nhìn về khoảnh khắc của bạn.";
 "notification.reply" = "%@ đã trả lời góc nhìn của bạn.";
+"notification.friend" = "%@ đã kết bạn với bạn.";

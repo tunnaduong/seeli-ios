@@ -256,3 +256,4 @@
 "connect.once.protected" = "スクリーンショット・画面収録はできません";
 "notification.comment" = "%@さんがあなたの瞬間に視点を届けました。";
 "notification.reply" = "%@さんがあなたの視点に返信しました。";
+"notification.friend" = "%@さんとつながりました。";

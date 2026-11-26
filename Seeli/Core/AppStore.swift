@@ -1,4 +1,5 @@
 import Foundation
+import UserNotifications
 import Observation
 import SwiftUI
 import WidgetKit
@@ -87,6 +88,15 @@ final class AppStore {
             guard let self, self.isLoggedIn else { return }
             self.path = [.connect]
         }
+        NotificationCenter.default.addObserver(forName: .seeliOpenFriend, object: nil, queue: .main) { [weak self] note in
+            guard let self, self.isLoggedIn else { return }
+            let id = note.object as? String
+            Task {
+                // The new friend may not be in the local list yet.
+                await self.refresh()
+                if let id, self.friend(id) != nil { self.path = [.profile, .friends, .friend(id)] } else { self.path = [.profile, .friends] }
+            }
+        }
         NotificationCenter.default.addObserver(forName: .seeliOpenComments, object: nil, queue: .main) { [weak self] note in
             guard let self, self.isLoggedIn else { return }
             self.pendingCommentsMoment = note.object as? String
@@ -99,8 +109,15 @@ final class AppStore {
 
     /// Asks for permission once there is someone to hear from, then registers with APNs.
     func enableFriendPush() async {
-        guard isLoggedIn, friendPushEnabled, !friends.isEmpty else { return }
-        guard await NotificationService.requestPermission() else { return }
+        guard isLoggedIn, friendPushEnabled else { return }
+        if friends.isEmpty {
+            // No one to hear from yet: don't ask, but if notifications are already allowed,
+            // register so "X added you" can still arrive.
+            let status = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
+            guard status == .authorized || status == .provisional else { return }
+        } else {
+            guard await NotificationService.requestPermission() else { return }
+        }
         await MainActor.run { UIApplication.shared.registerForRemoteNotifications() }
     }
 
