@@ -206,6 +206,7 @@ struct AddFriendView: View {
     @State private var failed = false
     @State private var busy = false
     @State private var added: Friend?
+    @State private var requested = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -227,18 +228,26 @@ struct AddFriendView: View {
                 .padding(.top, 20)
                 .padding(.horizontal, 30)
             Spacer()
-            if let preview, !preview.isSelf, !preview.isFriend, added == nil {
+            if let preview, !preview.isSelf, !preview.isFriend, added == nil, !requested, preview.requested != true {
                 Button {
                     busy = true
                     Task {
-                        added = await store.addFriend(invite)
+                        switch await store.addFriend(invite) {
+                        case .friends(let f): added = f
+                        case .requested: requested = true
+                        case nil: break
+                        }
                         busy = false
                     }
                 } label: {
-                    if busy { ProgressView().tint(.white) } else { Text(t("addFriend.connect")) }
+                    if busy { ProgressView().tint(.white) }
+                    else { Text(preview.requestedMe == true ? t("requests.accept") : t("addFriend.request")) }
                 }
                 .buttonStyle(PrimaryButtonStyle())
                 .disabled(busy)
+                if let error = store.lastError, !busy {
+                    Text(error).font(.system(size: 12)).foregroundStyle(Color(hex: 0xB0574A)).padding(.top, 8)
+                }
                 Button(t("common.cancel")) { dismiss() }
                     .font(.system(size: 13)).foregroundStyle(Color.seeliMuted).padding(.top, 12)
             } else {
@@ -256,8 +265,10 @@ struct AddFriendView: View {
         if failed { return t("addFriend.notFound") }
         guard let preview else { return "" }
         if added != nil { return t("addFriend.done") }
+        if requested || preview.requested == true { return tf("addFriend.requested", preview.user.name) }
         if preview.isSelf { return t("addFriend.self") }
         if preview.isFriend { return t("addFriend.already") }
+        if preview.requestedMe == true { return tf("addFriend.requestedMe", preview.user.name) }
         return t("addFriend.question")
     }
 

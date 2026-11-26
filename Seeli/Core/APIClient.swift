@@ -85,10 +85,19 @@ final class APIClient {
 
     struct Empty: Decodable {}
 
+    /// "moments/x/comments?v=2" → path plus query (appendingPathComponent would escape the "?").
+    private func url(for path: String) -> URL {
+        let parts = path.split(separator: "?", maxSplits: 1).map(String.init)
+        let base = baseURL.appendingPathComponent(parts[0])
+        guard parts.count == 2, var c = URLComponents(url: base, resolvingAgainstBaseURL: false) else { return base }
+        c.percentEncodedQuery = parts[1]
+        return c.url ?? base
+    }
+
     @discardableResult
     func request<T: Decodable>(_ method: String, _ path: String, body: [String: Any]? = nil,
                                as type: T.Type = Empty.self) async throws -> T {
-        var req = URLRequest(url: baseURL.appendingPathComponent(path))
+        var req = URLRequest(url: url(for: path))
         req.httpMethod = method
         if let body {
             req.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -112,6 +121,10 @@ final class APIClient {
         field("note", p.note)
         if let place = p.placeName { field("placeName", place) }
         field("audience", p.audience.rawValue)
+        if p.audience == .selected, let ids = p.recipients,
+           let json = try? JSONSerialization.data(withJSONObject: ids), let text = String(data: json, encoding: .utf8) {
+            field("recipients", text)
+        }
         field("createdAt", iso)
         field("demo", p.demo ? "true" : "false")
         body.append("--\(boundary)\r\nContent-Disposition: form-data; name=\"photo\"; filename=\"photo.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)

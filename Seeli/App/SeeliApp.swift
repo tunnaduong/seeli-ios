@@ -74,6 +74,7 @@ struct MainFlow: View {
         case .privacy: PrivacyView()
         case .settings: SettingsView()
         case .verified: VerifiedView()
+        case .requests: FriendRequestsView()
         case .scan: QRScanView()
         case .myQR: MyQRView()
         case .reunion(let id): ReunionView(momentID: id)

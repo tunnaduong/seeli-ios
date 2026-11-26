@@ -123,6 +123,24 @@ struct FriendsView: View {
                     Button { store.path.append(.scan) } label: {
                         MenuRow(icon: "qrcode.viewfinder", title: t("connect.qr.title"), subtitle: t("connect.qr.body"))
                     }
+                    let pending = store.friendRequests.incoming.count + store.friendRequests.outgoing.count
+                    if pending > 0 {
+                        Button { store.path.append(.requests) } label: {
+                            HStack(spacing: 0) {
+                                MenuRow(icon: "person.badge.plus", title: t("requests.title"),
+                                        subtitle: store.friendRequests.incoming.isEmpty
+                                            ? tf("requests.sent.count", store.friendRequests.outgoing.count)
+                                            : tf("requests.incoming.count", store.friendRequests.incoming.count))
+                            }
+                            .overlay(alignment: .topTrailing) {
+                                CountBadge(count: store.friendRequests.incoming.count).padding(8)
+                            }
+                        }
+                    }
+                    if !store.friends.isEmpty {
+                        Text(t("friends.close.hint")).font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
+                            .frame(maxWidth: .infinity, alignment: .leading).padding(.top, 6)
+                    }
                     if store.friends.isEmpty {
                         Text(t("connect.empty")).font(.system(size: 13)).foregroundStyle(Color.seeliMuted)
                             .multilineTextAlignment(.center).padding(.top, 40)
@@ -136,6 +154,15 @@ struct FriendsView: View {
                                     Text("@\(friend.handle)").font(.system(size: 12)).foregroundStyle(Color.seeliMuted)
                                 }
                                 Spacer()
+                                Button { Task { await store.setClose(friend.id, !friend.isClose) } } label: {
+                                    Image(systemName: friend.isClose ? "star.fill" : "star")
+                                        .font(.system(size: 17))
+                                        .foregroundStyle(friend.isClose ? Color(hex: 0xD9A93E) : Color.seeliMuted)
+                                        .frame(width: 40, height: 40)
+                                        .contentShape(Rectangle())
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel(friend.isClose ? t("close.remove") : t("close.add"))
                                 Image(systemName: "chevron.right").font(.system(size: 13)).foregroundStyle(Color.seeliMuted)
                             }
                             .padding(14)
@@ -172,12 +199,23 @@ struct FriendProfileView: View {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text(friend.name).font(.system(size: 22, weight: .semibold)).foregroundStyle(Color.seeliInk)
                                 Text("@\(friend.handle)").font(.system(size: 13)).foregroundStyle(Color.seeliMuted)
-                                Chip(text: "MY CIRCLE")
+                                Chip(text: friend.isClose ? "CLOSE FRIEND" : "MY CIRCLE")
                             }
                             Spacer()
                         }
                         .padding(20)
                         .seeliCard(.seeliCard, radius: 24, border: false)
+
+                        Toggle(isOn: Binding(get: { friend.isClose },
+                                             set: { on in Task { await store.setClose(friendID, on) } })) {
+                            VStack(alignment: .leading, spacing: 3) {
+                                Label(t("close.toggle"), systemImage: "star").font(.system(size: 14, weight: .medium))
+                                Text(t("close.toggle.hint")).font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
+                            }
+                        }
+                        .tint(.seeliGreen)
+                        .padding(18)
+                        .seeliCard()
 
                         VStack(alignment: .leading, spacing: 12) {
                             Text(t("friend.bio")).font(.system(size: 14, weight: .semibold))
@@ -274,6 +312,7 @@ struct PrivacyView: View {
                     Text(t("privacy.default")).font(.system(size: 15, weight: .semibold))
                     Picker("", selection: $store.defaultAudience) {
                         Text("ONLY ME").tag(Audience.onlyMe)
+                        Text("CLOSE").tag(Audience.closeFriends)
                         Text("MY CIRCLE").tag(Audience.circle)
                     }
                     .pickerStyle(.segmented)
@@ -447,5 +486,80 @@ struct VerifiedView: View {
             }
             .padding(.horizontal, 32)
         }
+    }
+}
+
+/// Friend requests: people who scanned my code (accept or decline) and ones I sent.
+struct FriendRequestsView: View {
+    @Environment(AppStore.self) private var store
+    @State private var busy: String?
+
+    var body: some View {
+        SeeliScreen(title: "REQUESTS", subtitle: t("requests.subtitle"), leading: .back) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(t("requests.incoming")).font(.system(size: 15, weight: .semibold))
+                    if store.friendRequests.incoming.isEmpty {
+                        Text(t("requests.incoming.empty")).font(.system(size: 13)).foregroundStyle(Color.seeliMuted)
+                    }
+                    ForEach(store.friendRequests.incoming) { r in
+                        HStack(spacing: 12) {
+                            Avatar(initial: r.user.initial, size: 44)
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(r.user.name).font(.system(size: 15, weight: .medium)).foregroundStyle(Color.seeliInk)
+                                Text("@\(r.user.handle) · \(DateText.stamp(r.createdAt))").font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
+                            }
+                            Spacer()
+                            if busy == r.id {
+                                ProgressView()
+                            } else {
+                                Button {
+                                    busy = r.id
+                                    Task { _ = await store.acceptRequest(r.user.id); busy = nil }
+                                } label: {
+                                    Text(t("requests.accept")).font(.system(size: 13, weight: .semibold))
+                                        .padding(.horizontal, 14).padding(.vertical, 8)
+                                        .background(Capsule().fill(Color.seeliGreen)).foregroundStyle(.white)
+                                }
+                                Button {
+                                    busy = r.id
+                                    Task { await store.dropRequest(r.user.id); busy = nil }
+                                } label: {
+                                    Image(systemName: "xmark").font(.system(size: 13, weight: .semibold))
+                                        .frame(width: 34, height: 34)
+                                        .background(Circle().fill(Color.seeliCard)).foregroundStyle(Color.seeliInk)
+                                }
+                                .accessibilityLabel(t("requests.decline"))
+                            }
+                        }
+                        .padding(14)
+                        .seeliCard()
+                    }
+
+                    if !store.friendRequests.outgoing.isEmpty {
+                        Text(t("requests.sent")).font(.system(size: 15, weight: .semibold)).padding(.top, 16)
+                        ForEach(store.friendRequests.outgoing) { r in
+                            HStack(spacing: 12) {
+                                Avatar(initial: r.user.initial, size: 36)
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(r.user.name).font(.system(size: 14, weight: .medium)).foregroundStyle(Color.seeliInk)
+                                    Text(t("requests.waiting")).font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
+                                }
+                                Spacer()
+                                Button(t("requests.cancel")) { Task { await store.dropRequest(r.user.id) } }
+                                    .font(.system(size: 12)).foregroundStyle(Color.seeliMuted)
+                            }
+                            .padding(12)
+                            .seeliCard()
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 30)
+            }
+            .refreshable { await store.pullRefresh() }
+        }
+        .task { await store.refresh() }
     }
 }

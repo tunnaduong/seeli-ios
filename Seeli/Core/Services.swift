@@ -73,6 +73,7 @@ extension Notification.Name {
     static let seeliOpenConnect = Notification.Name("seeli.openConnect")
     static let seeliOpenComments = Notification.Name("seeli.openComments")
     static let seeliOpenFriend = Notification.Name("seeli.openFriend")
+    static let seeliOpenRequests = Notification.Name("seeli.openRequests")
 }
 
 /// Receives the APNs device token and notification taps, and hands them to AppStore.
@@ -97,8 +98,13 @@ final class SeeliAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificatio
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         let info = response.notification.request.content.userInfo
         switch info["type"] as? String {
-        case "friend_post", "comment_reply":
+        case "friend_post":
             await MainActor.run { NotificationCenter.default.post(name: .seeliOpenConnect, object: nil) }
+        case "comment_reply":
+            let id = info["momentId"] as? String
+            await MainActor.run { NotificationCenter.default.post(name: .seeliOpenComments, object: id) }
+        case "friend_request":
+            await MainActor.run { NotificationCenter.default.post(name: .seeliOpenRequests, object: nil) }
         case "friend_added":
             let id = info["friendId"] as? String
             await MainActor.run { NotificationCenter.default.post(name: .seeliOpenFriend, object: id) }

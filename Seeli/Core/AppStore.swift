@@ -23,6 +23,11 @@ final class AppStore {
     var onceImages: [String: UIImage] = [:]
     var blocked: [PublicUser] = []
     var outbox: [PendingUpload] = []
+    /// Comments on my photos, answers to my comments, friend requests (last 30 days).
+    var activity: [ActivityItem] = []
+    var friendRequests = FriendRequests()
+    /// When Let's connect was last opened; newer posts and activity count toward the badge.
+    var connectSeenAt: Date = .distantPast
 
     // Preferences
     var defaultAudience: Audience = .onlyMe
@@ -42,6 +47,8 @@ final class AppStore {
     var pendingInvite: FriendInvite?
     /// A moment whose comments should open (tapped a "new perspective" notification).
     var pendingCommentsMoment: String?
+    /// A friend's post whose comments should open in Let's connect.
+    var pendingThreadPost: String?
     var isSyncing = false
     /// True right after sign-up, so the "account created" screen shows before entering.
     var welcomePending = false
@@ -50,6 +57,7 @@ final class AppStore {
     private var authGeneration = 0
 
     private struct Health: Decodable { var allowDemo: Bool? }
+    private struct ActivityResponse: Decodable { var items: [ActivityItem] }
 
     private struct Snapshot: Codable {
         var account: UserAccount?
@@ -62,6 +70,9 @@ final class AppStore {
         var demoMode: Bool
         var notificationsEnabled: Bool
         var friendPushEnabled: Bool?
+        var activity: [ActivityItem]?
+        var friendRequests: FriendRequests?
+        var connectSeenAt: Date?
     }
 
     private static var documents: URL { FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0] }
@@ -99,8 +110,12 @@ final class AppStore {
         }
         NotificationCenter.default.addObserver(forName: .seeliOpenComments, object: nil, queue: .main) { [weak self] note in
             guard let self, self.isLoggedIn else { return }
-            self.pendingCommentsMoment = note.object as? String
-            self.path = [.memories]
+            self.openComments(momentID: note.object as? String)
+            Task { await self.refresh() }
+        }
+        NotificationCenter.default.addObserver(forName: .seeliOpenRequests, object: nil, queue: .main) { [weak self] _ in
+            guard let self, self.isLoggedIn else { return }
+            self.path = [.connect, .requests]
             Task { await self.refresh() }
         }
     }
@@ -154,13 +169,17 @@ final class AppStore {
         demoMode = s.demoMode
         notificationsEnabled = s.notificationsEnabled
         friendPushEnabled = s.friendPushEnabled ?? true
+        activity = s.activity ?? []
+        friendRequests = s.friendRequests ?? FriendRequests()
+        connectSeenAt = s.connectSeenAt ?? .distantPast
     }
 
     func save() {
         let s = Snapshot(account: account, moments: moments, friends: friends, friendPosts: friendPosts,
                          blocked: blocked, outbox: outbox, defaultAudience: defaultAudience,
                          demoMode: demoMode, notificationsEnabled: notificationsEnabled,
-                         friendPushEnabled: friendPushEnabled)
+                         friendPushEnabled: friendPushEnabled, activity: activity,
+                         friendRequests: friendRequests, connectSeenAt: connectSeenAt)
         if let data = try? JSONEncoder().encode(s) {
             try? data.write(to: fileURL, options: [.atomic, .completeFileProtection])
         }
@@ -236,6 +255,7 @@ final class AppStore {
         // A different person on this phone: drop the previous cache.
         if account?.id != res.user.id {
             moments = []; friends = []; friendPosts = []; blocked = []; outbox = []
+            activity = []; friendRequests = FriendRequests(); connectSeenAt = .distantPast
         }
         account = res.user
         path = []
@@ -253,6 +273,7 @@ final class AppStore {
         NotificationService.cancelAll()
         account = nil
         moments = []; friends = []; friendPosts = []; blocked = []
+        activity = []; friendRequests = FriendRequests(); connectSeenAt = .distantPast
         clearOutbox()
         path = []
         authGeneration += 1
@@ -320,7 +341,11 @@ final class AppStore {
         async let feedReq = try? api.request("GET", "feed", as: [FriendPost].self)
         async let blocksReq = try? api.request("GET", "blocks", as: [PublicUser].self)
         async let healthReq = try? api.request("GET", "health", as: Health.self)
+        let since = Int(Date().addingTimeInterval(-30 * 86_400).timeIntervalSince1970 * 1000)
+        async let activityReq = try? api.request("GET", "activity?v=2&since=\(since)", as: ActivityResponse.self)
+        async let requestsReq = try? api.request("GET", "friend-requests", as: FriendRequests.self)
         let (me, ms, fs, feed, bl, health) = await (meReq, momentsReq, friendsReq, feedReq, blocksReq, healthReq)
+        let (act, reqs) = await (activityReq, requestsReq)
         if let health {
             serverAllowsDemo = health.allowDemo ?? false
             if !serverAllowsDemo { demoMode = false }
@@ -331,6 +356,8 @@ final class AppStore {
         if let fs { friends = fs }
         if let feed { friendPosts = feed }
         if let bl { blocked = bl }
+        if let act { activity = act.items }
+        if let reqs { friendRequests = reqs }
         refreshClock()
         save()
         await enableFriendPush()
@@ -368,6 +395,7 @@ final class AppStore {
         draft.imageData = imageData
         draft.capturedAt = Date()
         draft.audience = defaultAudience
+        if draft.audience == .closeFriends && !friends.contains(where: \.isClose) { draft.audience = .circle }
     }
 
     /// Save to the outbox first (so nothing is lost offline), then upload.
@@ -378,7 +406,8 @@ final class AppStore {
                               placeName: draft.recordPlace ? draft.placeName : nil,
                               audience: draft.audience,
                               createdAt: draft.capturedAt,
-                              demo: demoMode && serverAllowsDemo)
+                              demo: demoMode && serverAllowsDemo,
+                              recipients: draft.audience == .selected ? draft.recipients : nil)
         try? PhotoPrep.jpeg(data).write(to: Self.outboxDir.appendingPathComponent("\(p.id).jpg"), options: .atomic)
         outbox.append(p)
         draft = Draft()
@@ -404,7 +433,20 @@ final class AppStore {
                 outbox.removeAll { $0.id == p.id }
                 continue
             }
-            guard let moment = try? await api.uploadMoment(p, jpeg: jpeg) else { break } // offline: try later
+            let moment: Moment
+            do {
+                moment = try await api.uploadMoment(p, jpeg: jpeg)
+            } catch let e as APIError where e.code == "recipients_required" {
+                // The chosen people are no longer friends: keep the photo private instead of retrying forever.
+                if let i = outbox.firstIndex(where: { $0.id == p.id }) {
+                    outbox[i].audience = .onlyMe
+                    outbox[i].recipients = nil
+                }
+                save()
+                continue
+            } catch {
+                break // offline: try later
+            }
             try? FileManager.default.removeItem(at: file)
             outbox.removeAll { $0.id == p.id }
             moments.insert(moment, at: 0)
@@ -478,6 +520,85 @@ final class AppStore {
         await attempt({ try await api.request("GET", "moments/\(id)/comments", as: [Comment].self) }) ?? []
     }
 
+    // MARK: Comment threads
+
+    func thread(for momentID: String) async -> CommentThread? {
+        await attempt({ try await api.request("GET", "moments/\(momentID)/comments?v=2", as: CommentThread.self) })
+    }
+
+    func postComment(momentID: String, text: String, parentID: String?, visibility: ThreadComment.Visibility) async -> ThreadComment? {
+        let clean = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !clean.isEmpty else { return nil }
+        var body: [String: Any] = ["text": clean, "visibility": visibility.rawValue]
+        if let parentID { body["parentId"] = parentID }
+        let c = await attempt({ try await api.request("POST", "moments/\(momentID)/comments", body: body, as: ThreadComment.self) })
+        if c != nil { bumpCounts(momentID: momentID, delta: 1, text: parentID == nil ? clean : nil) }
+        return c
+    }
+
+    func editComment(momentID: String, commentID: String, text: String) async -> ThreadComment? {
+        let clean = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !clean.isEmpty else { return nil }
+        return await attempt({
+            try await api.request("PATCH", "moments/\(momentID)/comments/\(commentID)", body: ["text": clean], as: ThreadComment.self)
+        })
+    }
+
+    func deleteComment(momentID: String, commentID: String) async -> Bool {
+        let ok = await attempt({ try await api.request("DELETE", "moments/\(momentID)/comments/\(commentID)") }) != nil
+        if ok { Task { await refresh() } }
+        return ok
+    }
+
+    func approveComment(momentID: String, commentID: String, approve: Bool) async -> Bool {
+        let ok = await attempt({
+            try await api.request("POST", "moments/\(momentID)/comments/\(commentID)/approve", body: ["approve": approve])
+        }) != nil
+        if ok, let i = moments.firstIndex(where: { $0.id == momentID }), let n = moments[i].pendingCount, n > 0 {
+            moments[i].pendingCount = n - 1
+            save()
+        }
+        return ok
+    }
+
+    /// Keeps the cards' counters right until the next refresh.
+    private func bumpCounts(momentID: String, delta: Int, text: String?) {
+        if let i = friendPosts.firstIndex(where: { $0.id == momentID }) {
+            friendPosts[i].commentCount = (friendPosts[i].commentCount ?? 0) + delta
+            friendPosts[i].myCommentCount = (friendPosts[i].myCommentCount ?? 0) + delta
+            friendPosts[i].lastActivityAt = Date()
+            if let text { friendPosts[i].myComment = text }
+        }
+        save()
+    }
+
+    /// Opens a moment's comments: my own photo in Memories, a friend's in Let's connect.
+    func openComments(momentID: String?) {
+        guard let momentID else { path = [.connect]; return }
+        if moments.contains(where: { $0.id == momentID }) {
+            pendingCommentsMoment = momentID
+            path = [.memories]
+        } else {
+            pendingThreadPost = momentID
+            path = [.connect]
+        }
+    }
+
+    // MARK: Let's connect badge
+
+    /// New friend posts plus activity since Let's connect was last opened.
+    var connectBadge: Int {
+        let posts = friendPosts.filter { $0.createdAt > connectSeenAt && $0.viewedAt == nil }.count
+        // Friend requests are counted from the pending list instead (they stay until answered).
+        let news = activity.filter { $0.at > connectSeenAt && $0.type != "friend_request" }.count
+        return posts + news
+    }
+
+    func markConnectSeen() {
+        connectSeenAt = Date()
+        save()
+    }
+
     func refreshClock() { now = Date() }
 
     func handle(_ url: URL) {
@@ -500,7 +621,12 @@ final class AppStore {
         var user: PublicUser
         var isSelf: Bool
         var isFriend: Bool
+        var requested: Bool?
+        var requestedMe: Bool?
     }
+
+    enum AddResult { case requested, friends(Friend) }
+    private struct AddResponse: Decodable { var status: String; var friend: Friend? }
 
     func friend(_ id: String) -> Friend? { friends.first { $0.id == id } }
 
@@ -510,15 +636,50 @@ final class AppStore {
         try await api.request("GET", "invites/\(invite.code)", as: InvitePreview.self)
     }
 
-    func addFriend(_ invite: FriendInvite) async -> Friend? {
-        guard let f = await attempt({
-            try await api.request("POST", "friends", body: ["code": invite.code], as: Friend.self)
+    /// Sends a friend request (or connects right away if they had already asked).
+    func addFriend(_ invite: FriendInvite) async -> AddResult? {
+        guard let r = await attempt({
+            try await api.request("POST", "friends", body: ["code": invite.code, "request": true], as: AddResponse.self)
         }) else { return nil }
+        Task { await refresh() }
+        if let f = r.friend, r.status == "friends" {
+            friends.removeAll { $0.id == f.id }
+            friends.insert(f, at: 0)
+            save()
+            return .friends(f)
+        }
+        return .requested
+    }
+
+    func acceptRequest(_ userID: String) async -> Bool {
+        guard let f = await attempt({ try await api.request("POST", "friend-requests/\(userID)/accept", as: Friend.self) }) else {
+            return false
+        }
+        friendRequests.incoming.removeAll { $0.user.id == userID }
         friends.removeAll { $0.id == f.id }
         friends.insert(f, at: 0)
         save()
         Task { await refresh() }
-        return f
+        return true
+    }
+
+    /// Declines an incoming request or cancels one I sent.
+    func dropRequest(_ userID: String) async {
+        guard await attempt({ try await api.request("DELETE", "friend-requests/\(userID)") }) != nil else { return }
+        friendRequests.incoming.removeAll { $0.user.id == userID }
+        friendRequests.outgoing.removeAll { $0.user.id == userID }
+        save()
+    }
+
+    func setClose(_ id: String, _ close: Bool) async {
+        guard let i = friends.firstIndex(where: { $0.id == id }) else { return }
+        friends[i].close = close
+        save()
+        if let f = await attempt({ try await api.request("PATCH", "friends/\(id)", body: ["close": close], as: Friend.self) }),
+           let j = friends.firstIndex(where: { $0.id == id }) {
+            friends[j] = f
+            save()
+        }
     }
 
     func updateMemo(_ id: String, memo: String) async {
@@ -596,6 +757,7 @@ final class AppStore {
         save()
     }
 
+    /// (Older single-comment flow, still used by widgets/tests.)
     func sendPerspective(postID: String, text: String) async -> Bool {
         let clean = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !clean.isEmpty,

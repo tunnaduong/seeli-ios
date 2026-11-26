@@ -125,6 +125,18 @@ struct PostView: View {
 struct AudienceView: View {
     @Environment(AppStore.self) private var store
     @State private var audience: Audience = .onlyMe
+    @State private var recipients: Set<String> = []
+    @State private var managingClose = false
+
+    private var closeCount: Int { store.friends.filter(\.isClose).count }
+
+    private var canSubmit: Bool {
+        switch audience {
+        case .selected: return !recipients.isEmpty
+        case .closeFriends: return closeCount > 0
+        default: return true
+        }
+    }
 
     var body: some View {
         SeeliScreen(title: "AUDIENCE", subtitle: t("audience.subtitle"), leading: .back) {
@@ -133,7 +145,21 @@ struct AudienceView: View {
                     SectionTitle(title: t("audience.title"), subtitle: t("audience.hint"))
                         .padding(.bottom, 10)
                     ForEach(Audience.allCases) { option in
-                        AudienceOption(option: option, selected: audience == option) { audience = option }
+                        AudienceOption(option: option, selected: audience == option, detail: detail(option)) {
+                            withAnimation(.easeInOut(duration: 0.2)) { audience = option }
+                        }
+                        if option == .closeFriends && audience == .closeFriends {
+                            Button { managingClose = true } label: {
+                                Label(closeCount == 0 ? t("audience.close.pick") : t("audience.close.manage"), systemImage: "star")
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundStyle(Color.seeliGreen)
+                            }
+                            .padding(.leading, 18)
+                        }
+                        if option == .selected && audience == .selected {
+                            FriendPicker(selection: $recipients)
+                                .transition(.opacity.combined(with: .move(edge: .top)))
+                        }
                     }
                     HStack(alignment: .top, spacing: 12) {
                         Image(systemName: "lock").foregroundStyle(Color.seeliMuted)
@@ -148,14 +174,17 @@ struct AudienceView: View {
                     .padding(.top, 10)
                 }
                 .padding(.horizontal, 24)
+                .padding(.bottom, 16)
             }
             VStack(spacing: 14) {
                 Button(t("audience.submit")) {
                     store.draft.audience = audience
+                    store.draft.recipients = audience == .selected ? Array(recipients) : []
                     store.commitDraft()
                     store.path = [.posted]
                 }
-                .buttonStyle(PrimaryButtonStyle())
+                .buttonStyle(PrimaryButtonStyle(enabled: canSubmit))
+                .disabled(!canSubmit)
                 Button(t("audience.cancel")) {
                     store.draft = Draft()
                     store.path = []
@@ -166,13 +195,28 @@ struct AudienceView: View {
             .padding(.horizontal, 24)
             .padding(.bottom, 12)
         }
-        .onAppear { audience = store.draft.audience }
+        .onAppear {
+            audience = store.draft.audience
+            recipients = Set(store.draft.recipients)
+        }
+        .sheet(isPresented: $managingClose) {
+            CloseFriendsSheet().presentationDetents([.medium, .large])
+        }
+    }
+
+    private func detail(_ option: Audience) -> String? {
+        switch option {
+        case .closeFriends: return closeCount == 0 ? t("audience.close.none") : tf("audience.close.count", closeCount)
+        case .selected: return recipients.isEmpty ? nil : tf("audience.selected.count", recipients.count)
+        default: return nil
+        }
     }
 }
 
 private struct AudienceOption: View {
     var option: Audience
     var selected: Bool
+    var detail: String? = nil
     var action: () -> Void
 
     private var disabled: Bool { option == .everyone }
@@ -197,12 +241,17 @@ private struct AudienceOption: View {
                     Text(t(option.descriptionKey)).font(.system(size: 15))
                         .foregroundStyle(disabled ? Color.seeliMuted : Color.seeliInk)
                         .multilineTextAlignment(.leading)
+                    if let detail {
+                        Text(detail).font(.system(size: 12)).foregroundStyle(Color.seeliGreen)
+                    }
                 }
                 Spacer()
                 if disabled {
                     Text(t("audience.soon")).font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
                         .padding(.horizontal, 12).padding(.vertical, 6)
                         .background(Capsule().fill(.white))
+                } else {
+                    Image(systemName: option.icon).font(.system(size: 15)).foregroundStyle(Color.seeliMuted)
                 }
             }
             .padding(.horizontal, 18)
@@ -215,6 +264,109 @@ private struct AudienceOption: View {
         }
         .disabled(disabled)
         .animation(.easeInOut(duration: 0.15), value: selected)
+    }
+}
+
+/// Tick the friends who should receive this moment.
+struct FriendPicker: View {
+    @Environment(AppStore.self) private var store
+    @Binding var selection: Set<String>
+    @State private var query = ""
+
+    private var shown: [Friend] {
+        let q = query.trimmingCharacters(in: .whitespaces).lowercased()
+        let list = store.friends.sorted { ($0.isClose ? 0 : 1, $0.name) < ($1.isClose ? 0 : 1, $1.name) }
+        guard !q.isEmpty else { return list }
+        return list.filter { $0.name.lowercased().contains(q) || $0.handle.lowercased().contains(q) }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            if store.friends.isEmpty {
+                Text(t("connect.empty")).font(.system(size: 13)).foregroundStyle(Color.seeliMuted)
+                    .padding(14)
+            } else {
+                HStack {
+                    Image(systemName: "magnifyingglass").foregroundStyle(Color.seeliMuted)
+                    TextField(t("picker.search"), text: $query)
+                        .textInputAutocapitalization(.never).autocorrectionDisabled()
+                    if !selection.isEmpty {
+                        Button(t("picker.clear")) { selection.removeAll() }
+                            .font(.system(size: 12)).foregroundStyle(Color.seeliGreen)
+                    }
+                }
+                .font(.system(size: 14))
+                .padding(.horizontal, 12).frame(height: 40)
+                .seeliCard(.seeliCard, radius: 12, border: false)
+                VStack(spacing: 0) {
+                    ForEach(shown) { f in
+                        Button {
+                            if selection.contains(f.id) { selection.remove(f.id) } else { selection.insert(f.id) }
+                        } label: {
+                            HStack(spacing: 12) {
+                                Avatar(initial: f.initial, size: 34)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    HStack(spacing: 4) {
+                                        Text(f.name).font(.system(size: 14, weight: .medium)).foregroundStyle(Color.seeliInk)
+                                        if f.isClose { Image(systemName: "star.fill").font(.system(size: 10)).foregroundStyle(Color.seeliSun) }
+                                    }
+                                    Text("@\(f.handle)").font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
+                                }
+                                Spacer()
+                                Image(systemName: selection.contains(f.id) ? "checkmark.circle.fill" : "circle")
+                                    .font(.system(size: 20))
+                                    .foregroundStyle(selection.contains(f.id) ? Color.seeliGreen : Color.seeliMuted.opacity(0.6))
+                            }
+                            .padding(.horizontal, 12).padding(.vertical, 9)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityAddTraits(selection.contains(f.id) ? .isSelected : [])
+                    }
+                }
+                .seeliCard(radius: 16)
+            }
+        }
+        .padding(.leading, 8)
+    }
+}
+
+/// Mark which friends are close friends (used by the "Close friends" audience).
+struct CloseFriendsSheet: View {
+    @Environment(AppStore.self) private var store
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack {
+                Text(t("close.title")).font(.system(size: 18, weight: .semibold))
+                Spacer()
+                Button(t("common.done")) { dismiss() }.font(.system(size: 14, weight: .semibold)).foregroundStyle(Color.seeliGreen)
+            }
+            Text(t("close.hint")).font(.system(size: 12)).foregroundStyle(Color.seeliMuted)
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(store.friends) { f in
+                        Button { Task { await store.setClose(f.id, !f.isClose) } } label: {
+                            HStack(spacing: 12) {
+                                Avatar(initial: f.initial, size: 34)
+                                Text(f.name).font(.system(size: 14, weight: .medium)).foregroundStyle(Color.seeliInk)
+                                Spacer()
+                                Image(systemName: f.isClose ? "star.fill" : "star")
+                                    .font(.system(size: 18))
+                                    .foregroundStyle(f.isClose ? Color(hex: 0xD9A93E) : Color.seeliMuted)
+                            }
+                            .padding(.horizontal, 12).padding(.vertical, 10)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .seeliCard(radius: 16)
+            }
+        }
+        .padding(24)
+        .background(Color.seeliBG.ignoresSafeArea())
     }
 }
 

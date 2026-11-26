@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070C47A6B78A723E708ADBB8 /* SwipeBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA70FEFAA3EBBD4092D65BD /* SwipeBack.swift */; };
 		0AC2B2F74299164151279FE4 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338BAD41E90D1D2F0D50C771 /* APIClient.swift */; };
 		0C56EF6E73BA64743465D2E4 /* Landscape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C898ADAA47FFA66419A2144E /* Landscape.swift */; };
 		11C754C54BEA3C1748278781 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E104A696D1C9CDC2755106F /* Theme.swift */; };
@@ -40,6 +41,7 @@
 		D81018EE68796BD861A16B2D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA4CA65BA340B66A56108B9 /* Models.swift */; };
 		E022B09732A690FD4B762C4D /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A5E7430899F75E8557406 /* WidgetData.swift */; };
 		F2853A728263C0BC3E9C6659 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7AB8685603489A10B03653 /* L10n.swift */; };
+		F95DED3037E0E2E43219E12C /* CommentThreadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25F6211238EA2C961975B92 /* CommentThreadView.swift */; };
 		F986307A9F25FEE3E5721276 /* SeeliApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F700F024E3F3E5B317F47AF2 /* SeeliApp.swift */; };
 		FC2C4E30B682D346E0F4A5BC /* VerticalText.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D216744D3BA5AE8BBE692 /* VerticalText.swift */; };
 		FE79B44DDF9A1A2F42671146 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8009344214D5DE504007327E /* HomeView.swift */; };
@@ -97,6 +99,8 @@
 		84C165590E8B5EDB844A5D99 /* MemoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoriesView.swift; sourceTree = "<group>"; };
 		8CC06D08B8D27143772F4AA2 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		9C7AB8685603489A10B03653 /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		A25F6211238EA2C961975B92 /* CommentThreadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentThreadView.swift; sourceTree = "<group>"; };
+		ACA70FEFAA3EBBD4092D65BD /* SwipeBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeBack.swift; sourceTree = "<group>"; };
 		AE6F2650FC3E7DC8B7D14B78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BC9B458EB594C89E663F8847 /* DateText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateText.swift; sourceTree = "<group>"; };
 		BF9D216744D3BA5AE8BBE692 /* VerticalText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalText.swift; sourceTree = "<group>"; };
@@ -204,6 +208,7 @@
 			children = (
 				ECE1651CFB7CA6855BE58724 /* AuthViews.swift */,
 				6872BB5AAD2C935AA42D6A21 /* CameraView.swift */,
+				A25F6211238EA2C961975B92 /* CommentThreadView.swift */,
 				FC37E7ABB63F0B1C288D327E /* ConnectView.swift */,
 				8009344214D5DE504007327E /* HomeView.swift */,
 				84C165590E8B5EDB844A5D99 /* MemoriesView.swift */,
@@ -222,6 +227,7 @@
 				8CC06D08B8D27143772F4AA2 /* Components.swift */,
 				C898ADAA47FFA66419A2144E /* Landscape.swift */,
 				52DAA7E7A52472945AC0DF12 /* SocialButtons.swift */,
+				ACA70FEFAA3EBBD4092D65BD /* SwipeBack.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -351,6 +357,7 @@
 				4D123961601387905F15044D /* AppStore.swift in Sources */,
 				A3AC932AA4647697BC4C9769 /* AuthViews.swift in Sources */,
 				AAE564D81E7D72CF75F22AA3 /* CameraView.swift in Sources */,
+				F95DED3037E0E2E43219E12C /* CommentThreadView.swift in Sources */,
 				7DA8378C2C1264E9FB1FE6BC /* Components.swift in Sources */,
 				3619F9A8D3B52ADE7B093BBE /* ConnectView.swift in Sources */,
 				8388B59F69293D77B580068D /* DateText.swift in Sources */,
@@ -368,6 +375,7 @@
 				A1FB773FE35344C1E98954B1 /* Services.swift in Sources */,
 				762A5BDE5F5954ECFD5798BA /* SocialAuth.swift in Sources */,
 				5B78BECC941E53370E8DD35E /* SocialButtons.swift in Sources */,
+				070C47A6B78A723E708ADBB8 /* SwipeBack.swift in Sources */,
 				11C754C54BEA3C1748278781 /* Theme.swift in Sources */,
 				FC2C4E30B682D346E0F4A5BC /* VerticalText.swift in Sources */,
 				8BA30E09B2FC28414442C75A /* WidgetData.swift in Sources */,

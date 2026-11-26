@@ -76,7 +76,12 @@ struct HomeView: View {
             HStack {
                 Button { store.path.append(.connect) } label: {
                     Label("Let's connect", systemImage: "person.2")
+                        .overlay(alignment: .topLeading) {
+                            CountBadge(count: store.connectBadge + store.friendRequests.incoming.count)
+                                .offset(x: 14, y: -12)
+                        }
                 }
+                .accessibilityValue(store.connectBadge > 0 ? tf("home.connect.badge", store.connectBadge) : "")
                 Spacer()
                 Button { store.path.append(.memories) } label: {
                     Label("Memories", systemImage: "folder")

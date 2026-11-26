@@ -1,12 +1,20 @@
 import Foundation
 
 enum Audience: String, Codable, CaseIterable, Identifiable {
-    case onlyMe, circle, everyone
+    case onlyMe, closeFriends, selected, circle, everyone
     var id: String { rawValue }
+
+    /// Unknown values (from a newer server) read as circle rather than failing the whole list.
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = Audience(rawValue: raw) ?? .circle
+    }
 
     var badge: String {
         switch self {
         case .onlyMe: return "ONLY ME"
+        case .closeFriends: return "CLOSE FRIENDS"
+        case .selected: return "CHOSEN"
         case .circle: return "MY CIRCLE"
         case .everyone: return "PUBLIC"
         }
@@ -15,10 +23,28 @@ enum Audience: String, Codable, CaseIterable, Identifiable {
     var descriptionKey: String {
         switch self {
         case .onlyMe: return "audience.onlyMe.desc"
+        case .closeFriends: return "audience.close.desc"
+        case .selected: return "audience.selected.desc"
         case .circle: return "audience.circle.desc"
         case .everyone: return "audience.public.desc"
         }
     }
+
+    var icon: String {
+        switch self {
+        case .onlyMe: return "lock"
+        case .closeFriends: return "star"
+        case .selected: return "person.crop.circle.badge.checkmark"
+        case .circle: return "person.2"
+        case .everyone: return "globe"
+        }
+    }
+}
+
+/// Who a moment is shared with (newer servers); `audience` alone is only onlyMe / circle.
+struct ShareInfo: Codable, Hashable {
+    var audience: Audience
+    var recipientIds: [String]
 }
 
 struct PublicUser: Codable, Hashable, Identifiable {
@@ -46,6 +72,53 @@ extension Comment {
     }
 }
 
+/// One comment in a moment's shared thread (GET comments?v=2).
+struct ThreadComment: Identifiable, Codable, Hashable {
+    enum Visibility: String, Codable { case owner, circle }
+    enum Status: String, Codable { case pending, approved, rejected }
+
+    var id: String
+    var parentId: String?
+    var text: String
+    var createdAt: Date
+    var editedAt: Date?
+    var author: PublicUser
+    var visibility: Visibility
+    var status: Status
+    var mine: Bool
+
+    var isPending: Bool { visibility == .circle && status == .pending }
+}
+
+struct CommentThread: Decodable {
+    var isOwner: Bool
+    var comments: [ThreadComment]
+}
+
+/// Something that happened that concerns me (GET activity?v=2).
+struct ActivityItem: Identifiable, Codable, Hashable {
+    var type: String
+    var momentId: String?
+    var at: Date
+    var user: PublicUser
+    var commentId: String?
+    var text: String?
+    var pending: Bool?
+
+    var id: String { "\(type)-\(commentId ?? momentId ?? "")-\(user.id)-\(at.timeIntervalSince1970)" }
+}
+
+struct FriendRequest: Identifiable, Codable, Hashable {
+    var user: PublicUser
+    var createdAt: Date
+    var id: String { user.id }
+}
+
+struct FriendRequests: Codable, Hashable {
+    var incoming: [FriendRequest] = []
+    var outgoing: [FriendRequest] = []
+}
+
 /// A photo the user took. The server only sends `photoUrl` once `revealAt` has passed.
 struct Moment: Identifiable, Codable, Hashable {
     var id: String
@@ -60,8 +133,13 @@ struct Moment: Identifiable, Codable, Hashable {
     var photoUrl: String?
     /// Waiting in the outbox (taken offline / upload failed).
     var isPending: Bool? = nil
+    var share: ShareInfo? = nil
+    /// Comments meant for the circle that wait for my approval.
+    var pendingCount: Int? = nil
+    var lastCommentAt: Date? = nil
 
     var isRevealed: Bool { reunitedAt != nil }
+    var sharedWith: Audience { share?.audience ?? audience }
 }
 
 struct Friend: Identifiable, Codable, Hashable {
@@ -71,7 +149,9 @@ struct Friend: Identifiable, Codable, Hashable {
     var bio: String
     var memo: String
     var connectedAt: Date
+    var close: Bool? = false
 
+    var isClose: Bool { close ?? false }
     var initial: String { String(name.prefix(1)).uppercased() }
 }
 
@@ -90,6 +170,14 @@ struct FriendPost: Identifiable, Codable, Hashable {
     var scene: Int
     /// When I opened this photo. A friend's photo can be opened only once.
     var viewedAt: Date?
+    /// Comments I can see, mine, and answers to mine.
+    var commentCount: Int? = nil
+    var myCommentCount: Int? = nil
+    var repliesToMe: Int? = nil
+    /// Last time something concerning me happened here (my comments, answers to them).
+    var lastActivityAt: Date? = nil
+
+    var hasMyActivity: Bool { (myCommentCount ?? 0) > 0 || (repliesToMe ?? 0) > 0 || myComment != nil }
 }
 
 struct UserAccount: Codable, Hashable {
@@ -113,6 +201,7 @@ struct Draft {
     var recordPlace = true
     var placeName: String?
     var audience: Audience = .onlyMe
+    var recipients: [String] = []
 }
 
 /// A photo waiting to be uploaded (kept on disk until the server has it).
@@ -123,12 +212,13 @@ struct PendingUpload: Codable, Hashable, Identifiable {
     var audience: Audience
     var createdAt: Date
     var demo: Bool
+    var recipients: [String]? = nil
 }
 
 enum Route: Hashable {
     case camera, post, audience, posted
     case connect, memories
-    case profile, friends, friend(String), privacy, settings, verified
+    case profile, friends, friend(String), privacy, settings, verified, requests
     case scan, myQR
     case reunion(String), moment(String)
 }
