@@ -9,7 +9,7 @@ settings:
   base:
     SWIFT_VERSION: "5.0"
     MARKETING_VERSION: "1.2"
-    CURRENT_PROJECT_VERSION: "6"
+    CURRENT_PROJECT_VERSION: "7"
 targets:
   Seeli:
     type: application
@@ -44,7 +44,7 @@ targets:
         # Google Sign-In: iOS OAuth client from Google Cloud Console. Leave empty to hide the Google button.
         GOOGLE_CLIENT_ID: "536205051202-lm62pst3mblokg1hitvgjb8r279hufi0.apps.googleusercontent.com"
         GOOGLE_REVERSED_CLIENT_ID: "com.googleusercontent.apps.536205051202-lm62pst3mblokg1hitvgjb8r279hufi0"
-        SEELI_API_URL: https://seeli-api.tunnaduong.com
+        SEELI_API_URL: https://api.seeli.cam
         TARGETED_DEVICE_FAMILY: "1"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor

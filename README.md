@@ -26,7 +26,7 @@ Chọn iPhone simulator → Run. iOS 17+.
 
 ## Backend
 - App dùng API ở repo `../seeli-api` (Node + SQLite, deploy bằng Docker trên aaPanel).
-- Địa chỉ mặc định: build setting `SEELI_API_URL` trong `project.yml` (hiện là `https://seeli-api.tunnaduong.com`). Có thể đổi trong app: **Settings → Máy chủ**.
+- Địa chỉ mặc định: build setting `SEELI_API_URL` trong `project.yml` (hiện là `https://api.seeli.cam`). Có thể đổi trong app: **Settings → Máy chủ**.
 - Token đăng nhập lưu trong Keychain; dữ liệu được cache (`Documents/seeli-cache.json`) để mở app nhanh và xem offline.
 - Ảnh chụp khi mất mạng nằm trong hàng chờ (`Documents/outbox/`) và tự tải lên khi có mạng.
 - Kết bạn bằng mã mời 8 ký tự trong QR (Profile → biểu tượng QR).
