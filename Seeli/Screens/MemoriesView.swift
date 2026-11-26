@@ -77,9 +77,18 @@ struct MemoriesView: View {
         } message: {
             Text(t("memories.delete.body"))
         }
+        .task(id: store.pendingCommentsMoment.map { "\($0)-\(store.moments.count)" }) { openPendingComments() }
         .sheet(item: $viewingComments) { moment in
             CommentsSheet(moment: moment).presentationDetents([.medium, .large])
         }
+    }
+
+    /// Opened from a notification: jump to that photo's month and show its comments.
+    private func openPendingComments() {
+        guard let id = store.pendingCommentsMoment, let m = store.moment(id) else { return }
+        store.pendingCommentsMoment = nil
+        month = cal.date(from: cal.dateComponents([.year, .month], from: m.createdAt)) ?? month
+        viewingComments = m
     }
 
     private var isCurrentMonth: Bool { cal.isDate(month, equalTo: Date(), toGranularity: .month) }

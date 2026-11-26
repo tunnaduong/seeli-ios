@@ -39,6 +39,8 @@ final class AppStore {
     var path: [Route] = []
     var now = Date()
     var pendingInvite: FriendInvite?
+    /// A moment whose comments should open (tapped a "new perspective" notification).
+    var pendingCommentsMoment: String?
     var isSyncing = false
     /// True right after sign-up, so the "account created" screen shows before entering.
     var welcomePending = false
@@ -84,6 +86,12 @@ final class AppStore {
         NotificationCenter.default.addObserver(forName: .seeliOpenConnect, object: nil, queue: .main) { [weak self] _ in
             guard let self, self.isLoggedIn else { return }
             self.path = [.connect]
+        }
+        NotificationCenter.default.addObserver(forName: .seeliOpenComments, object: nil, queue: .main) { [weak self] note in
+            guard let self, self.isLoggedIn else { return }
+            self.pendingCommentsMoment = note.object as? String
+            self.path = [.memories]
+            Task { await self.refresh() }
         }
     }
 

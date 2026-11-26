@@ -71,6 +71,7 @@ final class LocationService: NSObject, CLLocationManagerDelegate {
 extension Notification.Name {
     static let seeliDeviceToken = Notification.Name("seeli.deviceToken")
     static let seeliOpenConnect = Notification.Name("seeli.openConnect")
+    static let seeliOpenComments = Notification.Name("seeli.openComments")
 }
 
 /// Receives the APNs device token and notification taps, and hands them to AppStore.
@@ -94,8 +95,13 @@ final class SeeliAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificatio
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         let info = response.notification.request.content.userInfo
-        if ["friend_post", "comment_reply"].contains(info["type"] as? String ?? "") {
+        switch info["type"] as? String {
+        case "friend_post", "comment_reply":
             await MainActor.run { NotificationCenter.default.post(name: .seeliOpenConnect, object: nil) }
+        case "comment":
+            let id = info["momentId"] as? String
+            await MainActor.run { NotificationCenter.default.post(name: .seeliOpenComments, object: id) }
+        default: break
         }
     }
 }

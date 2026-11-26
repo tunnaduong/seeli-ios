@@ -254,3 +254,5 @@
 "comments.reply.edit" = "編集";
 "connect.reply.from" = "%@さんからの返信";
 "connect.once.protected" = "スクリーンショット・画面収録はできません";
+"notification.comment" = "%@さんがあなたの瞬間に視点を届けました。";
+"notification.reply" = "%@さんがあなたの視点に返信しました。";
