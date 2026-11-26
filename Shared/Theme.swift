@@ -9,16 +9,22 @@ extension Color {
                   opacity: opacity)
     }
 
-    static let seeliBG = Color(hex: 0xF6F5F0)
-    static let seeliCard = Color(hex: 0xECEBE4)
-    static let seeliSurface = Color(hex: 0xFFFFFE)
-    static let seeliGreen = Color(hex: 0x5F6B4E)
-    static let seeliGreenSoft = Color(hex: 0xA9B79C)
-    static let seeliGreenPale = Color(hex: 0xC9D3BE)
-    static let seeliInk = Color(hex: 0x2F302B)
-    static let seeliMuted = Color(hex: 0x8B8C84)
-    static let seeliLine = Color(hex: 0xE2E1DA)
-    static let seeliSun = Color(hex: 0xF5D38A)
+    /// A colour that follows light / dark mode.
+    static func dynamic(_ light: UInt32, _ dark: UInt32) -> Color {
+        Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor(Color(hex: dark)) : UIColor(Color(hex: light)) })
+    }
+
+    // Warm paper by day, warm night by night.
+    static let seeliBG = dynamic(0xF6F5F0, 0x161713)
+    static let seeliCard = dynamic(0xECEBE4, 0x2A2C25)
+    static let seeliSurface = dynamic(0xFFFFFE, 0x1F211C)
+    static let seeliGreen = dynamic(0x5F6B4E, 0x7D8D65)
+    static let seeliGreenSoft = dynamic(0xA9B79C, 0x4A5440)
+    static let seeliGreenPale = dynamic(0xC9D3BE, 0x3B4433)
+    static let seeliInk = dynamic(0x2F302B, 0xECEAE2)
+    static let seeliMuted = dynamic(0x8B8C84, 0x9C9D94)
+    static let seeliLine = dynamic(0xE2E1DA, 0x33352E)
+    static let seeliSun = dynamic(0xF5D38A, 0xE0C07A)
     static let seeliNight = Color(hex: 0x1F211D)
 }
 

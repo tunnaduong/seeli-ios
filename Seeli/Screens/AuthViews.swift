@@ -122,7 +122,6 @@ struct SignUpView: View {
     @State private var handle = ""
     @State private var email = ""
     @State private var password = ""
-    @State private var agreed = false
     @State private var busy = false
     @State private var error: String?
 
@@ -144,18 +143,13 @@ struct SignUpView: View {
                                  secure: true, contentType: .newPassword)
                 }
 
-                Button { agreed.toggle() } label: {
-                    HStack(alignment: .top, spacing: 10) {
-                        Image(systemName: agreed ? "checkmark.circle.fill" : "circle")
-                            .foregroundStyle(agreed ? Color.seeliGreen : Color.seeliMuted)
-                            .font(.system(size: 18))
-                        Text(t("signup.promise"))
-                            .font(.system(size: 13))
-                            .foregroundStyle(Color.seeliInk)
-                            .multilineTextAlignment(.leading)
-                    }
-                }
-                .padding(.top, 22)
+                // Signing up means agreeing to the Terms of Use (links open in Safari).
+                Text(LocalizedStringKey(t("signup.terms")))
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.seeliMuted)
+                    .tint(Color.seeliGreen)
+                    .multilineTextAlignment(.leading)
+                    .padding(.top, 22)
 
                 if let error {
                     Text(error)
@@ -167,8 +161,8 @@ struct SignUpView: View {
                 Button { submit() } label: {
                     if busy { ProgressView().tint(.white) } else { Text(t("signup.button")) }
                 }
-                .buttonStyle(PrimaryButtonStyle(enabled: valid))
-                .disabled(!valid || busy)
+                .buttonStyle(PrimaryButtonStyle(enabled: !busy))
+                .disabled(busy)
                 .padding(.top, 28)
 
                 SocialButtons(onSignedIn: { isNew in
@@ -189,6 +183,8 @@ struct SignUpView: View {
     }
 
     private func submit() {
+        // Say what is missing instead of silently disabling the button.
+        if let problem { error = t(problem); return }
         busy = true
         error = nil
         Task {
@@ -209,14 +205,17 @@ struct SignUpView: View {
         handle.trimmingCharacters(in: .whitespaces).lowercased().replacingOccurrences(of: "@", with: "")
     }
 
-    private var valid: Bool {
+    /** The first thing to fix, as a string key; nil when the form is ready. */
+    private var problem: String? {
         let allowed = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
-        return !name.trimmingCharacters(in: .whitespaces).isEmpty
-            && (2...30).contains(cleanHandle.count)
-            && cleanHandle.unicodeScalars.allSatisfy { allowed.contains($0) }
-            && email.contains("@") && email.contains(".")
-            && password.count >= 8
-            && agreed
+        if name.trimmingCharacters(in: .whitespaces).isEmpty { return "signup.check.name" }
+        if !(2...30).contains(cleanHandle.count) || !cleanHandle.unicodeScalars.allSatisfy({ allowed.contains($0) }) {
+            return "signup.check.handle"
+        }
+        let mail = email.trimmingCharacters(in: .whitespaces)
+        if !mail.contains("@") || !mail.contains(".") { return "signup.check.email" }
+        if password.count < 8 { return "signup.check.password" }
+        return nil
     }
 }
 

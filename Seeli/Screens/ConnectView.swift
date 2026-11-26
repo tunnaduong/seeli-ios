@@ -393,7 +393,7 @@ private struct OncePhotoTile: View {
             } else if loading {
                 ProgressView().tint(.white)
             } else if let seen = post.viewedAt {
-                Color.seeliInk.opacity(0.45)
+                Color.black.opacity(0.42)
                 VStack(spacing: 8) {
                     Image(systemName: "eye.slash").font(.system(size: 24, weight: .light))
                     Text(t("connect.once.seen")).font(.system(size: 14, weight: .medium))

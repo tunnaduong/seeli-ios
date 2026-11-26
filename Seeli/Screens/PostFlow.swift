@@ -15,7 +15,7 @@ struct PostView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     VStack(spacing: 10) {
-                        Circle().fill(.white).frame(width: 56, height: 56)
+                        Circle().fill(Color.seeliSurface).frame(width: 56, height: 56)
                             .overlay(EyeLogo(size: 22, closed: true))
                         Text(t("post.hidden.title"))
                             .font(.system(size: 17, weight: .semibold))
@@ -249,7 +249,7 @@ private struct AudienceOption: View {
                 if disabled {
                     Text(t("audience.soon")).font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
                         .padding(.horizontal, 12).padding(.vertical, 6)
-                        .background(Capsule().fill(.white))
+                        .background(Capsule().fill(Color.seeliSurface))
                 } else {
                     Image(systemName: option.icon).font(.system(size: 15)).foregroundStyle(Color.seeliMuted)
                 }

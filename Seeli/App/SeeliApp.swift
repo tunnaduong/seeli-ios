@@ -12,7 +12,7 @@ struct SeeliApp: App {
                 .environment(store)
                 .environment(\.locale, L10n.shared.language.locale)
                 .tint(.seeliGreen)
-                .preferredColorScheme(.light)
+                .preferredColorScheme(store.colorScheme)
                 .onChange(of: scenePhase) { _, phase in
                     if phase == .active {
                         store.refreshClock()
@@ -43,6 +43,7 @@ struct RootView: View {
 
 struct MainFlow: View {
     @Environment(AppStore.self) private var store
+    @State private var showWhatsNew = false
 
     var body: some View {
         @Bindable var store = store
@@ -57,6 +58,13 @@ struct MainFlow: View {
                 .presentationDetents([.medium, .large])
         }
         .onOpenURL { url in store.handle(url) }
+        .sheet(isPresented: $showWhatsNew) { WhatsNewView() }
+        .task {
+            // Once per new version, a moment after opening (not over a pending invite).
+            guard WhatsNew.isPending else { return }
+            try? await Task.sleep(for: .milliseconds(600))
+            if store.pendingInvite == nil { showWhatsNew = true }
+        }
     }
 
     @ViewBuilder

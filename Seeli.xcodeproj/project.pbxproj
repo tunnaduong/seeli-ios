@@ -37,6 +37,7 @@
 		AB869E6A0A63B7362839014C /* MemoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C165590E8B5EDB844A5D99 /* MemoriesView.swift */; };
 		AF6D406F1C5AF23E6792401A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 46F0B314E698ECA4F17C415D /* Localizable.strings */; };
 		B4614E58982276CE8F6D1555 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7AB8685603489A10B03653 /* L10n.swift */; };
+		BD16F46E27AC357E3BBFDEC4 /* WhatsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985271EED42FD37CB9744E2E /* WhatsNewView.swift */; };
 		CE44F19855E088C53D9F9D8F /* SeeliWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 77440650927104C912815D66 /* SeeliWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D81018EE68796BD861A16B2D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA4CA65BA340B66A56108B9 /* Models.swift */; };
 		E022B09732A690FD4B762C4D /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A5E7430899F75E8557406 /* WidgetData.swift */; };
@@ -98,6 +99,7 @@
 		83BBC50B839E58AACBF02F90 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		84C165590E8B5EDB844A5D99 /* MemoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoriesView.swift; sourceTree = "<group>"; };
 		8CC06D08B8D27143772F4AA2 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		985271EED42FD37CB9744E2E /* WhatsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewView.swift; sourceTree = "<group>"; };
 		9C7AB8685603489A10B03653 /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		A25F6211238EA2C961975B92 /* CommentThreadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentThreadView.swift; sourceTree = "<group>"; };
 		ACA70FEFAA3EBBD4092D65BD /* SwipeBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeBack.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				21841197521690E7FE815BCD /* ProfileViews.swift */,
 				33EBBA1F39E45ABFB70E52D8 /* QRViews.swift */,
 				2CD1689A81D99E4C04DE4775 /* ReunionView.swift */,
+				985271EED42FD37CB9744E2E /* WhatsNewView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 				070C47A6B78A723E708ADBB8 /* SwipeBack.swift in Sources */,
 				11C754C54BEA3C1748278781 /* Theme.swift in Sources */,
 				FC2C4E30B682D346E0F4A5BC /* VerticalText.swift in Sources */,
+				BD16F46E27AC357E3BBFDEC4 /* WhatsNewView.swift in Sources */,
 				8BA30E09B2FC28414442C75A /* WidgetData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -488,7 +492,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -501,7 +505,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -617,7 +621,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -636,7 +640,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

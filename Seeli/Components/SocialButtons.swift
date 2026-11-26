@@ -23,8 +23,9 @@ struct SocialButtons: View {
                 label(t("auth.apple"), loading: busy == "apple") {
                     Image(systemName: "apple.logo").font(.system(size: 18, weight: .medium))
                 }
-                .foregroundStyle(.white)
-                .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(Color.black))
+                // Apple's button is black on light backgrounds and white on dark ones.
+                .foregroundStyle(Color.dynamic(0xFFFFFF, 0x000000))
+                .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(Color.dynamic(0x000000, 0xFFFFFF)))
             }
             .accessibilityLabel(t("auth.apple"))
 
@@ -32,7 +33,7 @@ struct SocialButtons: View {
                 Button { run("google") { try await google.start() } } label: {
                     label(t("auth.google"), loading: busy == "google") { GoogleMark().frame(width: 18, height: 18) }
                         .foregroundStyle(Color.seeliInk)
-                        .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(Color.white))
+                        .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(Color.seeliSurface))
                         .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Color.seeliLine, lineWidth: 1))
                 }
                 .accessibilityLabel(t("auth.google"))

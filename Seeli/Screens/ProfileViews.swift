@@ -21,12 +21,12 @@ struct ProfileView: View {
                                         .fixedSize()
                                         .foregroundStyle(Color.seeliInk)
                                         .padding(.horizontal, 14).padding(.vertical, 8)
-                                        .background(Capsule().fill(.white))
+                                        .background(Capsule().fill(Color.seeliSurface))
                                 }
                             }
                             Spacer(minLength: 0)
                             Button { store.path.append(.myQR) } label: {
-                                RoundedRectangle(cornerRadius: 14).fill(.white).frame(width: 56, height: 56)
+                                RoundedRectangle(cornerRadius: 14).fill(Color.seeliSurface).frame(width: 56, height: 56)
                                     .overlay(Image(systemName: "qrcode").font(.system(size: 26, weight: .light)).foregroundStyle(Color.seeliInk))
                             }
                             .accessibilityLabel(t("myqr.title"))
@@ -384,6 +384,15 @@ struct SettingsView: View {
                         }
                     }
 
+                    group(t("settings.appearance")) {
+                        Picker("", selection: $store.appearance) {
+                            Text(t("settings.appearance.system")).tag("system")
+                            Text(t("settings.appearance.light")).tag("light")
+                            Text(t("settings.appearance.dark")).tag("dark")
+                        }
+                        .pickerStyle(.segmented)
+                    }
+
                     group(t("settings.notifications")) {
                         Toggle(t("settings.notifications.reunion"), isOn: $store.notificationsEnabled)
                             .tint(.seeliGreen)
@@ -417,6 +426,18 @@ struct SettingsView: View {
                             .keyboardType(.URL)
                             .onSubmit { APIClient.shared.baseURLString = serverURL }
                         Text(t("settings.server.hint")).font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
+                    }
+
+                    group(t("settings.legal")) {
+                        let ja = L10n.shared.language == .ja ? "?lang=ja" : ""
+                        Link(destination: URL(string: "https://seeli.cam/terms\(ja)")!) {
+                            HStack { Text(t("settings.terms")); Spacer(); Image(systemName: "arrow.up.right").font(.system(size: 12)) }
+                                .foregroundStyle(Color.seeliInk).padding(.vertical, 4)
+                        }
+                        Link(destination: URL(string: "https://seeli.cam/privacy\(ja)")!) {
+                            HStack { Text(t("settings.privacyPolicy")); Spacer(); Image(systemName: "arrow.up.right").font(.system(size: 12)) }
+                                .foregroundStyle(Color.seeliInk).padding(.vertical, 4)
+                        }
                     }
 
                     group(t("settings.account")) {

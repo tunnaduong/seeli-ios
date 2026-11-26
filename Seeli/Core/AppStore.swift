@@ -37,6 +37,11 @@ final class AppStore {
     var notificationsEnabled = true
     /// Push when a friend shares to the circle.
     var friendPushEnabled = true
+    /// "system", "light" or "dark".
+    var appearance: String = UserDefaults.standard.string(forKey: "seeli.appearance") ?? "system" {
+        didSet { UserDefaults.standard.set(appearance, forKey: "seeli.appearance") }
+    }
+    var colorScheme: ColorScheme? { appearance == "light" ? .light : appearance == "dark" ? .dark : nil }
     @ObservationIgnored private var deviceToken: String?
 
     // Session (not persisted)
@@ -226,6 +231,7 @@ final class AppStore {
             "name": name, "handle": handle, "email": email, "password": password,
         ], as: AuthResponse.self)
         welcomePending = true
+        WhatsNew.markSeen() // everything is new to a new account
         startSession(res)
     }
 
@@ -238,6 +244,7 @@ final class AppStore {
         let res = try await api.request("POST", "auth/\(c.provider)", body: body, as: AuthResponse.self)
         let isNew = res.isNew ?? false
         welcomePending = isNew
+        if isNew { WhatsNew.markSeen() }
         startSession(res)
         if !isNew { await refresh() }
         return isNew

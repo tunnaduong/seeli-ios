@@ -104,7 +104,7 @@ struct Chip: View {
             .foregroundStyle(Color.seeliGreen)
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
-            .background(Capsule().fill(Color.white.opacity(0.85)))
+            .background(Capsule().fill(Color.seeliSurface.opacity(0.88)))
     }
 }
 
