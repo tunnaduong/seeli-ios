@@ -343,8 +343,8 @@
 "whatsnew.requests.body" = "QRコードを読み取るとリクエストが届き、相手が承認するとつながります。";
 "whatsnew.connect.title" = "すっきりしたLet's connect";
 "whatsnew.connect.body" = "新しい投稿とアクティビティが上に、以前の投稿はまとめて表示。ホームの赤い数字で新着がわかります。";
-"whatsnew.once.title" = "タップして開く写真";
-"whatsnew.once.body" = "友達の写真はタップしたときだけ開きます。スクロールしただけで「見た」にはなりません。";
+"whatsnew.once.title" = "本当に見たときだけ「見た」に";
+"whatsnew.once.body" = "友達の写真はLet's connectにそのまま表示されます。画面に映ったときだけ「見た」になり、素通りした写真やまだスクロールしていない写真は数えません。";
 "whatsnew.dark.title" = "ダークモード";
 "whatsnew.dark.body" = "端末のライト／ダークに合わせて表示します。設定から変更できます。";
 "whatsnew.gestures.title" = "スワイプで戻る、引っ張って更新";
@@ -354,3 +354,4 @@
 "settings.appearance.system" = "端末に合わせる";
 "settings.appearance.light" = "ライト";
 "settings.appearance.dark" = "ダーク";
+"error.google_unavailable" = "この端末ではGoogleでログインできませんでした。Googleアカウントが追加されているか確認するか、時間をおいて再度お試しください。メールでもログインできます。";

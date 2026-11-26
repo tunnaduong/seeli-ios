@@ -343,8 +343,8 @@
 "whatsnew.requests.body" = "Quét mã QR giờ là gửi lời mời — người kia đồng ý thì hai bạn mới thành bạn.";
 "whatsnew.connect.title" = "Let's connect gọn gàng hơn";
 "whatsnew.connect.body" = "Bài mới và hoạt động mới lên đầu, bài cũ được gộp lại. Số đỏ ở trang chủ báo có điều mới.";
-"whatsnew.once.title" = "Chạm mới mở ảnh";
-"whatsnew.once.body" = "Ảnh của bạn bè chỉ mở khi bạn chạm vào — lướt qua không còn bị tính là đã xem.";
+"whatsnew.once.title" = "Chỉ tính “đã xem” khi bạn thật sự xem";
+"whatsnew.once.body" = "Ảnh của bạn bè vẫn hiện ngay trong Let's connect, nhưng chỉ bị tính là đã xem khi ảnh nằm trên màn hình — lướt qua hay chưa cuộn tới thì không.";
 "whatsnew.dark.title" = "Chế độ tối";
 "whatsnew.dark.body" = "SEELI theo giao diện sáng hoặc tối của máy. Đổi trong Cài đặt.";
 "whatsnew.gestures.title" = "Vuốt để quay lại, kéo để làm mới";
@@ -354,3 +354,4 @@
 "settings.appearance.system" = "Theo máy";
 "settings.appearance.light" = "Sáng";
 "settings.appearance.dark" = "Tối";
+"error.google_unavailable" = "Không đăng nhập được bằng Google trên máy này. Hãy kiểm tra máy đã có tài khoản Google, thử lại sau, hoặc đăng nhập bằng email.";

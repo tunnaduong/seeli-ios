@@ -15,7 +15,7 @@ enum WhatsNew {
         Item(id: "audience", icon: "star"),
         Item(id: "requests", icon: "person.badge.plus"),
         Item(id: "connect", icon: "person.2"),
-        Item(id: "once", icon: "hand.tap"),
+        Item(id: "once", icon: "eye"),
         Item(id: "dark", icon: "moon"),
         Item(id: "gestures", icon: "hand.draw"),
     ]

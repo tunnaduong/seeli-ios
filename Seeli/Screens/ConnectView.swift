@@ -10,21 +10,32 @@ struct ConnectView: View {
     /// When this screen was last opened before now: newer things get a dot.
     @State private var seenBefore: Date?
 
+    /// Posts that were unopened at some point during this visit. They stay in "New" until the
+    /// next visit: if a post jumped out of the section the moment it was seen, the next one would
+    /// slide into its place on screen and be counted as seen too.
+    @State private var keptNew: Set<String> = []
+
     private var lastSeen: Date { seenBefore ?? store.connectSeenAt }
 
-    /// Not opened yet, newest first.
+    private func isNew(_ p: FriendPost) -> Bool { p.viewedAt == nil || keptNew.contains(p.id) }
+
+    /// Not opened yet (or opened during this visit), newest first.
     private var newPosts: [FriendPost] {
-        store.friendPosts.filter { $0.viewedAt == nil }.sorted { $0.createdAt > $1.createdAt }
+        store.friendPosts.filter(isNew).sorted { $0.createdAt > $1.createdAt }
     }
 
     /// Already opened, but I took part in the conversation.
     private var activePosts: [FriendPost] {
-        store.friendPosts.filter { $0.viewedAt != nil && $0.hasMyActivity }
+        store.friendPosts.filter { !isNew($0) && $0.hasMyActivity }
             .sorted { ($0.lastActivityAt ?? $0.createdAt) > ($1.lastActivityAt ?? $1.createdAt) }
     }
 
     private var olderPosts: [FriendPost] {
-        store.friendPosts.filter { $0.viewedAt != nil && !$0.hasMyActivity }.sorted { $0.createdAt > $1.createdAt }
+        store.friendPosts.filter { !isNew($0) && !$0.hasMyActivity }.sorted { $0.createdAt > $1.createdAt }
+    }
+
+    private func keepUnopened() {
+        keptNew.formUnion(store.friendPosts.filter { $0.viewedAt == nil }.map(\.id))
     }
 
     private var recentActivity: [ActivityItem] {
@@ -121,7 +132,9 @@ struct ConnectView: View {
             }
             .refreshable { await store.pullRefresh() }
         }
+        .onChange(of: store.friendPosts) { _, _ in keepUnopened() }
         .task {
+            keepUnopened()
             if seenBefore == nil {
                 seenBefore = store.connectSeenAt
                 store.markConnectSeen()
@@ -357,15 +370,16 @@ struct FriendPostCard: View {
     }
 }
 
-/// A friend's photo opens only when you tap it (once, after a confirmation), then shows
-/// full screen. It stays in the card while you are on this screen; leave and it is gone for good.
+/// A friend's photo shows right in the card — but only once the card is really on screen
+/// (most of it, for a moment), so photos you scroll past or that are preloaded below the
+/// fold are not counted as seen. It stays while you are on this screen; leave and it is gone.
 private struct OncePhotoTile: View {
     @Environment(AppStore.self) private var store
     var post: FriendPost
     var onOpen: () -> Void
     @Environment(\.scenePhase) private var scenePhase
     @State private var loading = false
-    @State private var confirming = false
+    @State private var onScreen = false
 
     var body: some View {
         ZStack {
@@ -402,37 +416,36 @@ private struct OncePhotoTile: View {
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
-            } else {
-                Button { confirming = true } label: {
-                    VStack(spacing: 8) {
-                        Image(systemName: "hand.tap").font(.system(size: 26, weight: .light))
-                        Text(t("connect.once.tap")).font(.system(size: 15, weight: .semibold))
-                        Text(t("connect.once.hint")).font(.system(size: 11)).opacity(0.85)
-                    }
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 22).padding(.vertical, 16)
-                    .background(RoundedRectangle(cornerRadius: 18).fill(.black.opacity(0.28)))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
             }
         }
+        .background {
+            GeometryReader { geo in
+                Color.clear
+                    .onAppear { onScreen = Self.mostlyVisible(geo.frame(in: .global)) }
+                    .onChange(of: geo.frame(in: .global)) { _, frame in
+                        let v = Self.mostlyVisible(frame)
+                        if v != onScreen { onScreen = v }
+                    }
+            }
+        }
+        .onDisappear { onScreen = false }
         .animation(.easeOut(duration: 0.35), value: store.onceImages[post.id] != nil)
-        .alert(t("connect.once.confirm.title"), isPresented: $confirming) {
-            Button(t("connect.once.confirm.ok")) { open() }
-            Button(t("common.cancel"), role: .cancel) {}
-        } message: {
-            Text(t("connect.once.confirm.body"))
+        // Open once the photo has been in view for a moment; scrolling past cancels it.
+        .task(id: onScreen && scenePhase == .active) {
+            guard onScreen, scenePhase == .active, post.viewedAt == nil, store.onceImages[post.id] == nil else { return }
+            try? await Task.sleep(for: .milliseconds(800))
+            guard !Task.isCancelled, onScreen, post.viewedAt == nil, store.onceImages[post.id] == nil else { return }
+            loading = true
+            await store.loadOncePhoto(postID: post.id)
+            loading = false
         }
     }
 
-    private func open() {
-        loading = true
-        Task {
-            await store.loadOncePhoto(postID: post.id)
-            loading = false
-            if store.onceImages[post.id] != nil { onOpen() }
-        }
+    /// At least 60% of the tile is inside the screen.
+    private static func mostlyVisible(_ frame: CGRect) -> Bool {
+        guard frame.height > 0 else { return false }
+        let screen = UIScreen.main.bounds
+        let visible = frame.intersection(screen)
+        return !visible.isNull && visible.height / frame.height >= 0.6
     }
 }
