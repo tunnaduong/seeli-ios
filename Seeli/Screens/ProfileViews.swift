@@ -452,13 +452,17 @@ struct SettingsView: View {
                         Button(t("settings.logout")) { confirmLogout = true }
                             .foregroundStyle(Color.seeliInk)
                             .padding(.vertical, 6)
-                        Button(t("settings.delete")) { confirmDelete = true }
-                            .foregroundStyle(Color(hex: 0xB0574A))
-                            .padding(.vertical, 6)
                         if let error = store.lastError {
                             Text(error).font(.system(size: 12)).foregroundStyle(Color(hex: 0xB0574A))
                         }
                     }
+
+                    // Destructive action kept apart from logout, at the very bottom of Settings.
+                    Button(t("settings.delete")) { confirmDelete = true }
+                        .font(.system(size: 13))
+                        .foregroundStyle(Color(hex: 0xB0574A))
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 36)
 
                     Text("SEELI \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")")
                         .font(.system(size: 11)).foregroundStyle(Color.seeliMuted)
